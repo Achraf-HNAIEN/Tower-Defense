@@ -52,6 +52,7 @@ void chooseStartingPoint(int *x, int *y) {
     printf("Starting Point Chosen: (%d, %d)\n", *x, *y); // Debug
 }
 
+
 int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize) {
     int extend = 0;
     int dx = 0, dy = 0;
@@ -68,6 +69,10 @@ int calculateExtend(int x, int y, int direction, int startX, int startY, Point *
         int newY = y + dy * extend;
 
         if (!isWithinBounds(newX, newY) || tooCloseToPath(newX, newY, startX, startY, path, pathSize)) {
+            return extend - 1;
+        }
+                // Check if the new position is within 2 units of the grid boundaries
+        if (newX < 2 || newX >= WIDTH - 2 || newY < 2 || newY >= HEIGHT - 2) {
             return extend - 1;
         }
     }
