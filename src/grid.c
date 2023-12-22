@@ -1,36 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define WIDTH 28
-#define HEIGHT 22
-#define PATH 1
-#define EMPTY 0
-#define MIN_TURNS 7
-#define MIN_LENGTH 75
-#define MAX_STEPS 4 
-
-#define NORTH 0
-#define EAST 1
-#define SOUTH 2
-#define WEST 3
-#define MAX_STEPS 4
-
-typedef struct {
-    int x;
-    int y;
-} Point;
-
-
-int isWithinBounds(int x, int y);
-int manhattanDistance(int x1, int y1, int x2, int y2);
-int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSize);
-void printGrid(int grid[HEIGHT][WIDTH]);
-void initializeGrid(int grid[HEIGHT][WIDTH]);
-void chooseStartingPoint(int *x, int *y);
-int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize);
-void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
-int chooseDirection(int x, int y, int startX, int startY, Point *path, int pathSize, int grid[HEIGHT][WIDTH]);
+#include "grid.h"
 
 int isWithinBounds(int x, int y) {
     return x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT;
@@ -41,26 +12,6 @@ int manhattanDistance(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) + abs(y1 - y2);
 }
 
-// int tooCloseToPath(int x, int y, int startX, int startY, int grid[HEIGHT][WIDTH]) {
-//     for (int dy = -2; dy <= 2; dy++) {
-//         for (int dx = -2; dx <= 2; dx++) {
-//             int newX = x + dx;
-//             int newY = y + dy;
-
-//             // Skip the starting point
-//             if (newX == startX && newY == startY) {
-//                 continue;
-//             }
-
-//             if (isWithinBounds(newX, newY) && grid[newY][newX] == PATH) {
-//                 if (manhattanDistance(x, y, newX, newY) <= 2) {
-//                     return 1;
-//                 }
-//             }
-//         }
-//     }
-//     return 0;
-// }
 
 int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSize) {
     for (int i = 0; i < pathSize; i++) {
@@ -78,9 +29,6 @@ int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSi
     }
     return 0;  // Not close to any path points
 }
-
-
-
 
 void printGrid(int grid[HEIGHT][WIDTH]) {
     for (int y = 0; y < HEIGHT; y++) {
@@ -156,29 +104,7 @@ void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][W
     }
 }
 
-// int chooseDirection(int x, int y,int startX,int startY, int grid[HEIGHT][WIDTH]) {
-//     int totalExtend = 0;
-//     int directionExtend[4] = {0};
 
-//     for (int dir = 0; dir < 4; dir++) {
-//     directionExtend[dir] = calculateExtend(x, y, dir, startX, startY, path, pathSize);
-//         totalExtend += directionExtend[dir];
-//     }
-
-//     if (totalExtend == 0) {
-//         return -1; // No valid direction
-//     }
-
-//     int randomPick = rand() % totalExtend;
-//     for (int dir = 0; dir < 4; dir++) {
-//         if (randomPick < directionExtend[dir]) {
-//             return dir;
-//         }
-//         randomPick -= directionExtend[dir];
-//     }
-
-//     return -1;
-// }
 int chooseDirection(int x, int y, int startX, int startY, Point *path, int pathSize, int grid[HEIGHT][WIDTH]) {
     int totalExtend = 0;
     int directionExtend[4] = {0};
@@ -210,7 +136,7 @@ int chooseSteps(int extend) {
             steps++;
         }
     }
-    return (steps < 3) ? 3 : steps; 
+    return steps >= 3 ? steps : 3; // Ensure at least 3 steps
 }
 
 
@@ -226,42 +152,52 @@ int main() {
         length = turns = 0;
 
         chooseStartingPoint(&x, &y);
-        printf("Starting Point: x=%d, y=%d\n", x, y);  // Debug
         grid[y][x] = PATH;
         length++;
+        path = realloc(path, sizeof(Point));
+        path[0] = (Point){x, y};
+        pathSize = 1;
 
         int currentDirection, lastDirection = -1, extend, steps;
         while (length < MIN_LENGTH || turns < MIN_TURNS) {
             currentDirection = chooseDirection(x, y, x, y, path, pathSize, grid);
-            printf("Chosen Direction: %d\n", currentDirection);  // Debug
-            if (currentDirection == -1) {
-                printf("No valid direction found. Breaking out of loop.\n");  // Debug
-                break;
-            }
+            if (currentDirection == -1) break;
 
             extend = calculateExtend(x, y, currentDirection, x, y, path, pathSize);
-            printf("Extend in chosen direction: %d\n", extend);  // Debug
-            if (extend < 3) {
-                printf("Extend too short. Breaking out of loop.\n");  // Debug
-                break;
-            }
+            if (extend < 3) break;
 
             steps = chooseSteps(extend);
-            printf("Steps to move: %d\n", steps);  // Debug
             addPathSegment(&x, &y, currentDirection, steps, grid, &length, &path, &pathSize);
-            if (lastDirection != -1 && lastDirection != currentDirection) {
-                turns++;
-            }
-            printf("Current Length: %d, Current Turns: %d\n", length, turns);  // Debug
+
+            if (lastDirection != -1 && lastDirection != currentDirection) turns++;
             lastDirection = currentDirection;
+
+            // Recalculate the extend for the next move (90-degree turns)
+            int newDirections[2];
+            newDirections[0] = (currentDirection + 1) % 4; // Turn right 90 degrees
+            newDirections[1] = (currentDirection + 3) % 4; // Turn left 90 degrees
+
+            int bestDirection = -1, maxExtend = 0;
+            for (int i = 0; i < 2; i++) {
+                int dirExtend = calculateExtend(x, y, newDirections[i], x, y, path, pathSize);
+                if (dirExtend > maxExtend) {
+                    maxExtend = dirExtend;
+                    bestDirection = newDirections[i];
+                }
+            }
+
+            if (maxExtend < 3 || bestDirection == -1) break;
+            currentDirection = bestDirection;
         }
 
     } while (length < MIN_LENGTH || turns < MIN_TURNS);
-    for (int i = 0; i < pathSize; i++) {
-        printf("Path Point %d: (%d, %d)\n", i, path[i].x, path[i].y);
-    }
+
     printGrid(grid);
-    free(path);  
+
+    // Clean up
+    if (path != NULL) {
+        free(path);
+    }
 
     return 0;
 }
