@@ -30,6 +30,7 @@ void chooseStartingPoint(int *x, int *y);
 int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize);
 void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
 int chooseDirection(int x, int y, int startX, int startY, Point *path, int pathSize, int grid[HEIGHT][WIDTH]);
+void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize);
 
 
 #endif 

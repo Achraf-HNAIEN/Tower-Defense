@@ -18,16 +18,15 @@ int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSi
         int pathX = path[i].x;
         int pathY = path[i].y;
 
-        // Skip the current position and the starting point
         if ((pathX == x && pathY == y) || (pathX == startX && pathY == startY)) {
             continue;
         }
 
         if (manhattanDistance(x, y, pathX, pathY) <= 1) {
-            return 1;  // Too close to the path
+            return 1;  
         }
     }
-    return 0;  // Not close to any path points
+    return 0;  
 }
 
 void printGrid(int grid[HEIGHT][WIDTH]) {
@@ -71,12 +70,10 @@ int calculateExtend(int x, int y, int direction, int startX, int startY, Point *
         if (!isWithinBounds(newX, newY) || tooCloseToPath(newX, newY, startX, startY, path, pathSize)) {
             return extend - 1;
         }
-                // Check if the new position is within 2 units of the grid boundaries
         if (newX < 2 || newX >= WIDTH - 2 || newY < 2 || newY >= HEIGHT - 2) {
             return extend - 1;
         }
     }
-    printf("Direction %d, Extend: %d\n", direction, extend - 1); // Debug
     return extend - 1; 
 }
 
@@ -145,10 +142,69 @@ int chooseSteps(int extend) {
 }
 
 
-int main() {
-    int grid[HEIGHT][WIDTH];
-    Point *path = NULL;
-    int pathSize = 0;
+// int main() {
+//     int grid[HEIGHT][WIDTH];
+//     Point *path = NULL;
+//     int pathSize = 0;
+//     int x, y, length = 0, turns = 0;
+//     srand(time(NULL));
+
+//     do {
+//         initializeGrid(grid);
+//         length = turns = 0;
+
+//         chooseStartingPoint(&x, &y);
+//         grid[y][x] = PATH;
+//         length++;
+//         path = realloc(path, sizeof(Point));
+//         path[0] = (Point){x, y};
+//         pathSize = 1;
+
+//         int currentDirection, lastDirection = -1, extend, steps;
+//         while (length < MIN_LENGTH || turns < MIN_TURNS) {
+//             currentDirection = chooseDirection(x, y, x, y, path, pathSize, grid);
+//             if (currentDirection == -1) break;
+
+//             extend = calculateExtend(x, y, currentDirection, x, y, path, pathSize);
+//             if (extend < 3) break;
+
+//             steps = chooseSteps(extend);
+//             addPathSegment(&x, &y, currentDirection, steps, grid, &length, &path, &pathSize);
+
+//             if (lastDirection != -1 && lastDirection != currentDirection) turns++;
+//             lastDirection = currentDirection;
+
+//             // Recalculate the extend for the next move (90-degree turns)
+//             int newDirections[2];
+//             newDirections[0] = (currentDirection + 1) % 4; // Turn right 90 degrees
+//             newDirections[1] = (currentDirection + 3) % 4; // Turn left 90 degrees
+
+//             int bestDirection = -1, maxExtend = 0;
+//             for (int i = 0; i < 2; i++) {
+//                 int dirExtend = calculateExtend(x, y, newDirections[i], x, y, path, pathSize);
+//                 if (dirExtend > maxExtend) {
+//                     maxExtend = dirExtend;
+//                     bestDirection = newDirections[i];
+//                 }
+//             }
+
+//             if (maxExtend < 3 || bestDirection == -1) break;
+//             currentDirection = bestDirection;
+//         }
+
+//     } while (length < MIN_LENGTH || turns < MIN_TURNS);
+
+//     printGrid(grid);
+
+//     // Clean up
+//     if (path != NULL) {
+//         free(path);
+//     }
+
+//     return 0;
+// }
+
+void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
     int x, y, length = 0, turns = 0;
     srand(time(NULL));
 
@@ -159,32 +215,33 @@ int main() {
         chooseStartingPoint(&x, &y);
         grid[y][x] = PATH;
         length++;
-        path = realloc(path, sizeof(Point));
-        path[0] = (Point){x, y};
-        pathSize = 1;
+        *path = realloc(*path, sizeof(Point));
+        (*path)[0] = (Point){x, y};
+        *pathSize = 1;
 
         int currentDirection, lastDirection = -1, extend, steps;
         while (length < MIN_LENGTH || turns < MIN_TURNS) {
-            currentDirection = chooseDirection(x, y, x, y, path, pathSize, grid);
+            currentDirection = chooseDirection(x, y, x, y, *path, *pathSize, grid);
             if (currentDirection == -1) break;
 
-            extend = calculateExtend(x, y, currentDirection, x, y, path, pathSize);
+            extend = calculateExtend(x, y, currentDirection, x, y, *path, *pathSize);
             if (extend < 3) break;
 
             steps = chooseSteps(extend);
-            addPathSegment(&x, &y, currentDirection, steps, grid, &length, &path, &pathSize);
+            addPathSegment(&x, &y, currentDirection, steps, grid, &length, path, pathSize);
 
-            if (lastDirection != -1 && lastDirection != currentDirection) turns++;
+            if (lastDirection != -1 && lastDirection != currentDirection) {
+                turns++;
+            }
             lastDirection = currentDirection;
 
-            // Recalculate the extend for the next move (90-degree turns)
             int newDirections[2];
-            newDirections[0] = (currentDirection + 1) % 4; // Turn right 90 degrees
-            newDirections[1] = (currentDirection + 3) % 4; // Turn left 90 degrees
+            newDirections[0] = (currentDirection + 1) % 4; // Turn right
+            newDirections[1] = (currentDirection + 3) % 4; // Turn left
 
             int bestDirection = -1, maxExtend = 0;
             for (int i = 0; i < 2; i++) {
-                int dirExtend = calculateExtend(x, y, newDirections[i], x, y, path, pathSize);
+                int dirExtend = calculateExtend(x, y, newDirections[i], x, y, *path, *pathSize);
                 if (dirExtend > maxExtend) {
                     maxExtend = dirExtend;
                     bestDirection = newDirections[i];
@@ -196,13 +253,4 @@ int main() {
         }
 
     } while (length < MIN_LENGTH || turns < MIN_TURNS);
-
-    printGrid(grid);
-
-    // Clean up
-    if (path != NULL) {
-        free(path);
-    }
-
-    return 0;
 }
