@@ -1,28 +1,20 @@
-
 #ifndef MONSTRE_H
 #define MONSTRE_H
 
-#define MONSTER_COUNT 30
-#define SPEED_NORMAL 1.0f / 60.0f 
-#define SPEED_AGILE (2.0f / 60.0f)
-
 #include "grid.h"
 
-// typedef struct {
-//     float x, y; 
-//     float speed; 
-// } Monster;
+#define MONSTER_COUNT 30
 
-typedef struct {
-    float x, y;   
-    float speed; 
-    int pathIndex;
+typedef struct Monster {
+    int hp;         
+    double speed;      
+    int x, y;       
+    int damage;     
+    int pathIndex;  
 } Monster;
 
-
-void moveMonsters(Monster monsters[], Point path[], int pathLength);
-void initializeMonsters(Monster monsters[], int count, float speed);
-void printMonsterPositions(Monster monsters[], int count);
-
+void initializeMonsters(Monster monsters[], int count, Point path[]);
+void moveMonsters(Monster monsters[], int count, Point path[], int pathSize);
+void drawMonsters(Monster monsters[], int count);
 
 #endif

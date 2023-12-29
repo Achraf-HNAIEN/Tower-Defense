@@ -3,6 +3,7 @@
 
 #include <MLV/MLV_all.h>
 #include "grid.h"
+#include "monstre.h"
 
 #define CELL_SIZE 25 
 #define WIDTH 28     
@@ -14,4 +15,6 @@
 void draw_cell(int x, int y, MLV_Color color);
 void draw_grid_with_path(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
 void draw_start_and_finish(Point start, Point finish);
+void drawMonsters(Monster monsters[], int count);
+
 #endif
