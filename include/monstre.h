@@ -10,7 +10,7 @@ typedef struct Monster {
     double speed;      
     int x, y;       
     int damage;     
-    int pathIndex;  
+    double pathIndex;  
 } Monster;
 
 void initializeMonsters(Monster monsters[], int count, Point path[]);
