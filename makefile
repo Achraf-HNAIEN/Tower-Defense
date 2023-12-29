@@ -1,13 +1,14 @@
 CC := gcc
 CFLAGS := -Wall -g
-LIBS := -lm
+LIBS := -lm -lMLV
 SRCDIR := src
 INCDIR := include
 OBJDIR := obj
 BINDIR := bin
+GRAPHSRC := graph.c  # Assuming this is your new source file for drawing functions
 
 # Récupérer la liste des fichiers source .c de SRCDIR
-SRC := $(wildcard $(SRCDIR)/*.c)
+SRC := $(wildcard $(SRCDIR)/*.c) $(SRCDIR)/$(GRAPHSRC)
 # Convertir la liste des fichiers source en fichiers objets .o
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 # Dépendances

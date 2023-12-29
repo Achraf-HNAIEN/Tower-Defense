@@ -14,6 +14,9 @@
 #define SOUTH 2
 #define WEST 3
 #define MAX_STEPS 4
+#define MAX_ATTEMPTS 100000
+#define MAX(a, b)       ((a) < (b) ? (b) : (a))
+
 
 typedef struct {
     int x;
@@ -29,7 +32,8 @@ void initializeGrid(int grid[HEIGHT][WIDTH]);
 void chooseStartingPoint(int *x, int *y);
 int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize);
 void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
-int chooseDirection(int x, int y, int startX, int startY, Point *path, int pathSize, int grid[HEIGHT][WIDTH]);
+int validatePath(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
+int chooseNewDirection(int x, int y, int currentDirection, Point *path, int pathSize);
 void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize);
 
 
