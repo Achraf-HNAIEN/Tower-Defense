@@ -9,7 +9,6 @@ GRAPHSRC := graph.c
 
 SRC := $(wildcard $(SRCDIR)/*.c) $(SRCDIR)/$(GRAPHSRC)
 OBJ := $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-# Dépendances
 DEPS := $(wildcard $(INCDIR)/*.h)
 
 $(shell mkdir -p $(OBJDIR))
@@ -21,7 +20,7 @@ $(BINDIR)/game: $(OBJ)
 	$(CC) $^ -o $@ $(CFLAGS) $(LIBS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
-	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@ $(LIBS)
 
 clean:
 	rm -rf $(OBJDIR)/*.o $(BINDIR)/game

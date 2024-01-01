@@ -25,8 +25,8 @@ void draw_grid_with_path(int grid[HEIGHT][WIDTH], Point *path, int pathSize) {
 }
 
 void draw_start_and_finish(Point start, Point finish) {
-    draw_cell(start.x, start.y, MLV_COLOR_RED);   
-    draw_cell(finish.x, finish.y, MLV_COLOR_GREEN);
+    draw_cell(start.x, start.y, MLV_COLOR_GREEN);   
+    draw_cell(finish.x, finish.y, MLV_COLOR_RED);
 }
 
 void drawMonsters(Monster monsters[], int count) {

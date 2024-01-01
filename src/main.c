@@ -11,35 +11,38 @@ int main() {
     Point *path = NULL;
     Monster Monsters[MONSTER_COUNT];
     int pathSize = 0;
-    int quit = 0;  
-    const int frameDelay = 1000 / 60; 
+    int quit = 0;
+    const int frameDelay = 1000 / 60;
 
-    
     MLV_change_frame_rate(60);
     generatePath(grid, &path, &pathSize);
     initializeMonsters(Monsters, MONSTER_COUNT, path);
 
-    /* loop */
-    while (!quit) {
-        int start_time = MLV_get_time(); 
+    int previousTime = MLV_get_time();
 
-        moveMonsters(Monsters, MONSTER_COUNT, path, pathSize);
-        //printf("1 turn");
+    while (!quit) {
+        int currentTime = MLV_get_time();
+        float deltaTime = (currentTime - previousTime) / 1000.0f; // Calculate deltaTime in seconds
+        previousTime = currentTime; // Update previousTime for the next frame
+
+        moveMonsters(Monsters, MONSTER_COUNT, path, pathSize, deltaTime); // Pass deltaTime to moveMonsters
+
 
         /* Draw */
         MLV_clear_window(MLV_COLOR_BLACK);
         draw_grid_with_path(grid, path, pathSize);
+        drawMonsters(Monsters, MONSTER_COUNT);
         draw_start_and_finish(path[0], path[pathSize - 1]);
-        drawMonsters(Monsters, MONSTER_COUNT); 
         MLV_actualise_window();
 
-        /* Frame rate */
-        int frame_time = MLV_get_time() - start_time;
-        if (frame_time < frameDelay) {
-            MLV_delay_according_to_frame_rate(frameDelay, frame_time);
+        /* Frame rate control */
+        int frameTime = MLV_get_time() - currentTime;
+        if (frameTime < frameDelay) {
+            MLV_delay_according_to_frame_rate(frameDelay, frameTime);
         }
-    }
 
+        // Check for user input to potentially set 'quit' to 1 and exit the loop
+    }
 
     MLV_free_window();
     if (path != NULL) {

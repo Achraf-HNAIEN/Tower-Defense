@@ -6,15 +6,14 @@
 #define MONSTER_COUNT 30
 
 typedef struct Monster {
-    int hp;         
-    double speed;      
-    int x, y;       
-    int damage;     
-    double pathIndex;  
+    float hp;         
+    float speed;       
+    float x, y;        
+    float damage;      
+    int pathIndex;   
 } Monster;
 
-void initializeMonsters(Monster monsters[], int count, Point path[]);
-void moveMonsters(Monster monsters[], int count, Point path[], int pathSize);
-void drawMonsters(Monster monsters[], int count);
 
+void initializeMonsters(Monster monsters[], int count, Point path[]);
+void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, float deltaTime);
 #endif
