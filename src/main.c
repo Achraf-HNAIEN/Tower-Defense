@@ -5,6 +5,7 @@
 #include <time.h>
 
 int main() {
+    srand(time(NULL));
     MLV_create_window("Tower Defense Grid", "TD Grid", WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE);
 
     int grid[HEIGHT][WIDTH];
@@ -16,7 +17,7 @@ int main() {
 
     MLV_change_frame_rate(60);
     generatePath(grid, &path, &pathSize);
-    initializeMonsters(Monsters, MONSTER_COUNT, path);
+    initializeQuickMonsters(Monsters, 1, path);
 
     int previousTime = MLV_get_time();
 
