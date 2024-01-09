@@ -15,9 +15,12 @@ void initializeMonsters(Monster monsters[], int count, Point path[]) {
 }
 */
 
-void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, float deltaTime) {
+int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime) {
      // One second between each monster spawn
-
+    int count = 0;
+    if(monsters[0].type == BOSS) {count = 2;}
+    else if(monsters[0].type == CROWD) {count = 24;}
+    else {count = 12;}
     for (int i = 0; i < count; i++) {
         // Skip dead monsters
         if (monsters[i].hp <= 0) continue;
@@ -61,6 +64,7 @@ void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, flo
             }
         }
     }
+    return count;
 }
 
 
@@ -91,8 +95,17 @@ static MonsterType selectWaveType(int waveNumber) {
 }
 
 
-void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSize) {
+Monster * initializeWave(int waveNumber, Point path[], int pathSize) {
     MonsterType waveType = selectWaveType(waveNumber);
+    Monster * monsters;
+    if(waveType == BOSS){
+        monsters = (Monster *) malloc(sizeof(Monster) * 2);
+    }else if(waveType == CROWD){
+        monsters = (Monster *) malloc(sizeof(Monster) * 24);
+    }else{
+        monsters = (Monster *) malloc(sizeof(Monster) * 12);
+    }
+
     int count = 0;
     float baseHP = 100.0f;
 
@@ -136,6 +149,7 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
         // monsters[i].status_effects = 0; // No status effects initially
         // monsters[i].status_duration = 0.0f;
         // monsters[i].effect_intensity = 0.0f;
-
+        
     }
+    return monsters;
 }

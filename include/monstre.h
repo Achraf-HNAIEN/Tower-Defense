@@ -49,6 +49,6 @@ typedef struct Monster {
 } Monster;
 
 
-void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSize);
-void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, float deltaTime);
+Monster * initializeWave(int waveNumber, Point path[], int pathSize);
+int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime);
 #endif
