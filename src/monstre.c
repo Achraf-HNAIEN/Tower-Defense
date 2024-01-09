@@ -64,55 +64,6 @@ void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, flo
 }
 
 
-
-void initializeNormalMonsters(Monster monsters[], int wave, Point path[]){
-    const float spawnDelay = 60.0f;
-    for (int i = 0; i < 12; i++) {
-        monsters[i].hp = 5*pow(1.2,wave); // 5 a modifié (notre choix)
-        monsters[i].speed = 1; 
-        monsters[i].x = path[0].x; 
-        monsters[i].y = path[0].y; 
-        monsters[i].damage = 10; 
-        monsters[i].pathIndex = -i * spawnDelay;
-    }
-}
-
-
-void initializeCrowdMonsters(Monster monsters[], int wave, Point path[]){
-    const float spawnDelay = 60.0f;
-    for (int i = 0; i < 24; i++) {
-        monsters[i].hp = 5*pow(1.2,wave); // 5 a modifié (notre choix)
-        monsters[i].speed = 1; 
-        monsters[i].x = path[0].x; 
-        monsters[i].y = path[0].y; 
-        monsters[i].damage = 10; 
-        monsters[i].pathIndex = -i * spawnDelay;
-    }
-}
-
-void initializeQuickMonsters(Monster monsters[], int wave, Point path[]){
-    const float spawnDelay = 30.0f;
-    for (int i = 0; i < 12; i++) {
-        monsters[i].hp = 5*pow(1.2,wave); // 5 a modifié (notre choix)
-        monsters[i].speed = 2; 
-        monsters[i].x = path[0].x; 
-        monsters[i].y = path[0].y; 
-        monsters[i].damage = 10; 
-        monsters[i].pathIndex = -i * spawnDelay;
-    }
-}
-
-void initializeBosskMonsters(Monster monsters[], int wave, Point path[]){
-    const float spawnDelay = 60.0f;
-    for (int i = 0; i < 2; i++) {
-        monsters[i].hp = 12 * 5 * pow(1.2,wave); // 5 a modifié (notre choix)
-        monsters[i].speed = 1; 
-        monsters[i].x = path[0].x; 
-        monsters[i].y = path[0].y; 
-        monsters[i].damage = 10; 
-        monsters[i].pathIndex = -i * spawnDelay;
-    }
-}
 MonsterType selectWaveType(int waveNumber) {
     float randomValue = (float)rand() / RAND_MAX;
 
@@ -182,11 +133,11 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
         // Initialize other properties
         monsters[i].max_hp = monsters[i].hp;
         monsters[i].damage = 10.0f; // Default damage, adjust as needed
-        monsters[i].elemental_residue = 0.0f; // No elemental residue initially
-        monsters[i].mana_reward = monsters[i].hp * 0.1f * pow(1.3, /* current mana level */);
-        monsters[i].mana_penalty = monsters[i].hp * 0.15f * pow(1.3, /* current mana level */);
-        monsters[i].status_effects = 0; // No status effects initially
-        monsters[i].status_duration = 0.0f;
-        monsters[i].effect_intensity = 0.0f;
+        // monsters[i].elemental_residue = 0.0f; // No elemental residue initially
+        // monsters[i].mana_reward = monsters[i].hp * 0.1f * pow(1.3, /* current mana level */);
+        // monsters[i].mana_penalty = monsters[i].hp * 0.15f * pow(1.3, /* current mana level */);
+        // monsters[i].status_effects = 0; // No status effects initially
+        // monsters[i].status_duration = 0.0f;
+        // monsters[i].effect_intensity = 0.0f;
     }
 }

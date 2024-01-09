@@ -3,7 +3,6 @@
 
 #include "grid.h"
 
-#define MONSTER_COUNT 30
 
 #define WAVE_INTERVAL 35  // Interval in seconds
 #define PROB_NORMAL 0.50  // Proba normal wave
