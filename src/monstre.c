@@ -94,7 +94,7 @@ MonsterType selectWaveType(int waveNumber) {
 void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSize) {
     MonsterType waveType = selectWaveType(waveNumber);
     int count = 0;
-    float baseHP = 100.0f; // Base HP, can be adjusted
+    float baseHP = 100.0f;
 
     // Determine the number of monsters and other properties based on wave type
     switch (waveType) {
@@ -112,16 +112,14 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
             break;
     }
 
-    // Initialize monsters for the selected wave
     for (int i = 0; i < count; i++) {
         monsters[i].type = waveType;
         monsters[i].wave_number = waveNumber;
         monsters[i].x = path[0].x;
         monsters[i].y = path[0].y;
-        monsters[i].elemental_type = ELEMENT_NONE; // Default elemental type
+        monsters[i].elemental_type = ELEMENT_NONE;
         monsters[i].pathIndex = -i * WAVE_INTERVAL / count;
 
-        // Set HP and speed based on monster type
         if (waveType == BOSS) {
             monsters[i].hp = 12 * baseHP * pow(1.2, waveNumber);
             monsters[i].speed = 1.0f;
@@ -130,7 +128,6 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
             monsters[i].speed = (waveType == AGILE) ? 2.0f : 1.0f;
         }
 
-        // Initialize other properties
         monsters[i].max_hp = monsters[i].hp;
         monsters[i].damage = 10.0f; // Default damage, adjust as needed
         // monsters[i].elemental_residue = 0.0f; // No elemental residue initially
@@ -139,5 +136,6 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
         // monsters[i].status_effects = 0; // No status effects initially
         // monsters[i].status_duration = 0.0f;
         // monsters[i].effect_intensity = 0.0f;
+
     }
 }
