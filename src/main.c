@@ -6,7 +6,7 @@
 
 int main() {
     srand(time(NULL));
-    MLV_create_window("Tower Defense Grid", "TD Grid", WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE);
+    MLV_create_window("Tower Defense Grid", "TD Grid", WIDTH * CELL_SIZE + 200, HEIGHT * CELL_SIZE);
     int wave = 1;
     int monster_count = 12; // LE 12 DEPEND DE LA VAGUE
     int grid[HEIGHT][WIDTH];
@@ -18,7 +18,7 @@ int main() {
 
     MLV_change_frame_rate(60);
     generatePath(grid, &path, &pathSize);
-
+    initializeWave(Monsters, wave, path, pathSize);
     int previousTime = MLV_get_time();
 
     while (!quit) {

@@ -64,7 +64,7 @@ void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, flo
 }
 
 
-MonsterType selectWaveType(int waveNumber) {
+static MonsterType selectWaveType(int waveNumber) {
     float randomValue = (float)rand() / RAND_MAX;
 
     // For first 5 waves, exclude the BOSS wave type
@@ -118,7 +118,7 @@ void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSi
         monsters[i].x = path[0].x;
         monsters[i].y = path[0].y;
         monsters[i].elemental_type = ELEMENT_NONE;
-        monsters[i].pathIndex = -i * WAVE_INTERVAL / count;
+        (waveType == AGILE) ? (monsters[i].pathIndex = -i * SPAWN_DELAY/2) : (monsters[i].pathIndex = -i * SPAWN_DELAY);
 
         if (waveType == BOSS) {
             monsters[i].hp = 12 * baseHP * pow(1.2, waveNumber);

@@ -8,12 +8,13 @@
 #define PROB_NORMAL 0.50  // Proba normal wave
 #define PROB_CROWD  0.20  // Proba crowd wave
 #define PROB_AGILE  0.20  // Proba agile wave
-#define PROB_BOSS   0.10  // Proba boss wave
+#define PROB_BOSS   0.10  // P60roba boss wave
 
 #define COUNT_NORMAL 12   // normal wave
 #define COUNT_CROWD  24   // crowd wave
 #define COUNT_AGILE  12   // agile wave
 #define COUNT_BOSS   2    // boss wave
+#define SPAWN_DELAY 60
 
 typedef enum {
     ELEMENT_NONE,
@@ -48,10 +49,6 @@ typedef struct Monster {
 } Monster;
 
 
-void initializeNormalMonsters(Monster monsters[], int wave, Point path[]);
-void initializeCrowdMonsters(Monster monsters[], int wave, Point path[]);
-void initializeQuickMonsters(Monster monsters[], int wave, Point path[]);
-void initializeBosskMonsters(Monster monsters[], int wave, Point path[]);
-MonsterType selectWaveType(int waveNumber);
+void initializeWave(Monster monsters[], int waveNumber, Point path[], int pathSize);
 void moveMonsters(Monster monsters[], int count, Point path[], int pathSize, float deltaTime);
 #endif
