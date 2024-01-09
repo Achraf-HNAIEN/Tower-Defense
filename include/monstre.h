@@ -40,6 +40,7 @@ typedef struct Monster {
     int wave_number;   
     ElementalType elemental_type; 
     MonsterType type;
+    int tint;
     float elemental_residue;      
     float mana_reward;            
     float mana_penalty;           

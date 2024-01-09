@@ -131,6 +131,8 @@ Monster * initializeWave(int waveNumber, Point path[], int pathSize) {
         monsters[i].x = path[0].x;
         monsters[i].y = path[0].y;
         monsters[i].elemental_type = ELEMENT_NONE;
+        monsters[i].tint = rand() % 360;
+
         (waveType == AGILE) ? (monsters[i].pathIndex = -i * SPAWN_DELAY/2) : (monsters[i].pathIndex = -i * SPAWN_DELAY);
 
         if (waveType == BOSS) {

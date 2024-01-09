@@ -21,8 +21,8 @@ int main() {
 
     while (!game.quit) {
         int currentTime = MLV_get_time();
-        float deltaTime = (currentTime - previousTime) / 1000.0f; // Calculate deltaTime in seconds
-        previousTime = currentTime; // Update previousTime for the next frame
+        float deltaTime = (currentTime - previousTime) / 1000.0f; 
+        previousTime = currentTime; 
 
         int monster_count = moveMonsters(Monsters, game.path, game.pathSize, deltaTime); // Pass deltaTime to moveMonsters
 
