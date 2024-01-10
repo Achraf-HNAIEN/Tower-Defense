@@ -125,6 +125,7 @@ static void draw_fusion_and_inventory(Game * game){
     }
 }
 
+
 static void draw_side_information(Game * game){
     
     draw_wave_numberMana(game);
