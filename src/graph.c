@@ -124,7 +124,7 @@ static void draw_fusion_and_inventory(Game * game){
         }
     }
 }
-void drawMonsterHealthBar(const Monster *monster) {
+static drawMonsterHealthBar(const Monster *monster) {
     if (monster == NULL) {
         return; 
     }
