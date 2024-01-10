@@ -10,6 +10,8 @@ typedef struct{
   int pathSize;
   int quit;
   int grid[HEIGHT][WIDTH];
+  int nb_tour;
+  int level_mana;
   Point *path;
   }Game;
 

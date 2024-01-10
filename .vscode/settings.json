@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "grid.h": "c"
+    "grid.h": "c",
+    "math.h": "c"
   }
 }

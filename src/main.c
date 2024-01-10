@@ -9,7 +9,8 @@ int main() {
     srand(time(NULL));
     MLV_create_window("Tower Defense Grid", "TD Grid", WIDTH * CELL_SIZE + 200, HEIGHT * CELL_SIZE);
     Game game = {.wave = 1, .mana = 150 , .mana_max = 2000, 
-        .path = NULL, .pathSize = 0, .quit = 0 };
+        .path = NULL, .pathSize = 0, .quit = 0 , .nb_tour = 0,
+        .level_mana = 0};
     //Monster Monsters[monster_count]; 
 
     const int frameDelay = 1000 / 60;
