@@ -81,24 +81,24 @@ static void draw_wave_numberMana(Game * game){
 static void draw_shop(Game * game){
     int tower_cost = game->nb_tour < 3? 0 : 100 * pow(2,(game->nb_tour+1)-4);
     int sizeShop;
+    int gemme_cost = 100* pow(2,game->level_gemme_in_shop);
     MLV_get_size_of_text("Shop :",&sizeShop, NULL);
     MLV_draw_text(WIDTH * CELL_SIZE + 100 - sizeShop/2, 140, "Shop :", MLV_COLOR_GREEN);
 
     MLV_draw_text_box(WIDTH * CELL_SIZE + 5, 162, 92, 50,
     "Tower:\n %d mana", 1, MLV_COLOR_GREEN, MLV_COLOR_WHITE,
     MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,
-    MLV_VERTICAL_CENTER, tower_cost); // a changer mettre cout toour
+    MLV_VERTICAL_CENTER, tower_cost); 
 
 
-    MLV_draw_text_box(WIDTH * CELL_SIZE + 102, 162, 93, 50,
-    "Gemme level: \n %d mana", 1, MLV_COLOR_GREEN, MLV_COLOR_WHITE,
+    MLV_draw_text_box(WIDTH * CELL_SIZE + 105, 162, 93, 50,
+    "Gemme\n(level %d)\n%d mana", 1, MLV_COLOR_GREEN, MLV_COLOR_WHITE,
     MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,
-    MLV_VERTICAL_CENTER, game->wave); // a changer mettre cout gemme
+    MLV_VERTICAL_CENTER,game->level_gemme_in_shop, gemme_cost);
+
+    MLV_draw_text_box(WIDTH * CELL_SIZE + 181, 146,17,17, "+",1,MLV_COLOR_GREEN1,MLV_COLOR_RED,MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,MLV_VERTICAL_CENTER);
+    MLV_draw_text_box(WIDTH * CELL_SIZE + 181, 211,17,17, " -",1,MLV_COLOR_GREEN1,MLV_COLOR_RED,MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,MLV_VERTICAL_CENTER);
     
-    MLV_Input_box * input_box = MLV_create_input_box(WIDTH * CELL_SIZE + 170, 169, 30, 30,MLV_COLOR_BLACK,MLV_COLOR_BLACK,MLV_COLOR_LIGHT_GREY,"");
-    //MLV_activate_input_box(input_box);
-    // MLV_draw_input_box(input_box);
-    // MLV_activate_input_box(input_box);
 }
 
 static void draw_fusion_and_inventory(Game * game){
