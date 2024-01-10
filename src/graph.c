@@ -124,7 +124,28 @@ static void draw_fusion_and_inventory(Game * game){
         }
     }
 }
+void drawMonsterHealthBar(const Monster *monster) {
+    if (monster == NULL) {
+        return; 
+    }
 
+    int pixelX = monster->x * CELL_SIZE;
+    int pixelY = monster->y * CELL_SIZE;
+
+    float healthRatio = monster->hp / monster->max_hp;
+
+    MLV_Color healthColor = MLV_COLOR_GREEN;
+    if (healthRatio < 0.5) {
+        healthColor = MLV_COLOR_YELLOW;
+    }
+    if (healthRatio < 0.25) {
+        healthColor = MLV_COLOR_RED;
+    }
+
+    MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, MLV_COLOR_GREY);
+
+    MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, (int)(HEALTH_BAR_WIDTH * healthRatio), HEALTH_BAR_HEIGHT, healthColor);
+}
 
 static void draw_side_information(Game * game){
     
