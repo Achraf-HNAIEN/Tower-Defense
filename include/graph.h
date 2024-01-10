@@ -10,7 +10,9 @@
 #define WIDTH 28     
 #define HEIGHT 22    
 #define PATH 1       
-#define EMPTY 0      
+#define EMPTY 0
+#define HEALTH_BAR_WIDTH 20
+#define HEALTH_BAR_HEIGHT 3
 
 
 //void draw_cell(int x, int y, MLV_Color color);
