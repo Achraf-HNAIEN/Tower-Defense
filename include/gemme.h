@@ -41,7 +41,7 @@ typedef struct {
 } Gemme;
 
 Gemme generate_new_random_gemme();
-Gemme_pure generate_new_random_gemme_pure(Gemme);
+//Gemme_pure generate_new_random_gemme_pure(Gemme);
 Gemme createGemme(TypeGemme type, int niveau, int teinte, ElementType elementType);
 void upgradeGemme(Gemme *gemme);
 

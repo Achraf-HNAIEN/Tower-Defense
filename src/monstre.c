@@ -1,19 +1,6 @@
 #include "monstre.h"
 #include <math.h>
 #include <stdlib.h>
-/*
-void initializeMonsters(Monster monsters[], int count, Point path[]) {
-    const float spawnDelay = 60.0f;
-    for (int i = 0; i < count; i++) {
-        monsters[i].hp = 100;  
-        monsters[i].speed = 1; 
-        monsters[i].x = path[0].x; 
-        monsters[i].y = path[0].y; 
-        monsters[i].damage = 10; 
-        monsters[i].pathIndex = -i * spawnDelay;
-    }
-}
-*/
 
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime) {
      // One second between each monster spawn

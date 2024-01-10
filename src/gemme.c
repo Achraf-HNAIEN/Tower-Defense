@@ -6,7 +6,7 @@ Gemme generate_new_random_gemme(){
     return gemme;
 }
 
-Gemme_pure generate_new_random_gemme_pure(Gemme gemme){
-    Gemme_pure gemme_pure = {rand() % 3, rand() % 60, gemme.niveau};
-    return gemme_pure;
-}
+// Gemme_pure generate_new_random_gemme_pure(Gemme gemme){
+//     Gemme_pure gemme_pure = {rand() % 3, rand() % 60, gemme.niveau};
+//     return gemme_pure;
+// }

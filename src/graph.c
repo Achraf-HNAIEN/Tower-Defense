@@ -124,9 +124,9 @@ static void draw_fusion_and_inventory(Game * game){
         }
     }
 }
-static drawMonsterHealthBar(const Monster *monster) {
-    if (monster == NULL) {
-        return; 
+static void drawMonsterHealthBar(Monster *monster, int pathsize) {
+    if (monster == NULL || monster->pathIndex <=0 || monster->pathIndex > pathsize - 1) {
+        return;
     }
 
     int pixelX = monster->x * CELL_SIZE;
@@ -143,9 +143,9 @@ static drawMonsterHealthBar(const Monster *monster) {
     }
 
     MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, MLV_COLOR_GREY);
-
     MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, (int)(HEALTH_BAR_WIDTH * healthRatio), HEALTH_BAR_HEIGHT, healthColor);
 }
+
 
 static void draw_side_information(Game * game){
     
@@ -161,5 +161,8 @@ void drawAll(Game * game, Monster * Monsters, int count){
     drawMonsters(Monsters, count);
     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
     draw_side_information(game);
+    for (int i = 0; i < count; i++) {
+        drawMonsterHealthBar(&Monsters[i], game->pathSize);
+    }
     MLV_actualise_window();
 }
