@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "grid.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "tower.h": "c"
   }
 }

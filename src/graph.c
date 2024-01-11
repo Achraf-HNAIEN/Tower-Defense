@@ -1,5 +1,6 @@
 #include "graph.h"
-#include "game.h"
+
+
 #include <math.h>
 
 
@@ -125,7 +126,7 @@ static void draw_fusion_and_inventory(Game * game){
     }
 }
 static void drawMonsterHealthBar(Monster *monster, int pathsize) {
-    if (monster == NULL || monster->pathIndex <=0 || monster->pathIndex > pathsize - 1) {
+    if (monster == NULL || monster->pathIndex <=0 || monster->pathIndex >= pathsize - 1) {
         return;
     }
 
@@ -155,14 +156,58 @@ static void draw_side_information(Game * game){
     return ;
 }
 
+int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height) {
+    return mouse_x >= x && mouse_x < x + width && mouse_y >= y && mouse_y < y + height;
+}
+
+void drawTower(const Tower *tower) {
+    if (tower == NULL) {
+        fprintf(stderr, "Error: Null tower pointer in drawTower function\n");
+        return;
+    }
+    
+    int centerX = tower->position.x * CELL_SIZE + CELL_SIZE / 2;
+    int centerY = tower->position.y * CELL_SIZE + CELL_SIZE / 2;
+    int towerSize = CELL_SIZE / 2; 
+
+    MLV_Color towerColor = MLV_COLOR_BLACK;
+    if (tower->gemme != NULL) {
+        switch (tower->gemme->elementType) {
+            case PYRO:
+                towerColor = MLV_COLOR_RED;
+                break;
+            case DENDRO:
+                towerColor = MLV_COLOR_GREEN;
+                break;
+            case HYDRO:
+                towerColor = MLV_COLOR_BLUE;
+                break;
+            default:
+                towerColor = MLV_COLOR_GREY;
+        }
+    }
+    
+    
+    MLV_draw_filled_circle(centerX, centerY, towerSize, towerColor);
+    
+    
+    MLV_draw_circle(centerX, centerY, towerSize, MLV_COLOR_WHITE);
+    //printf("Drawing tower at: x=%d, y=%d, size=%d\n", centerX, centerY, towerSize);
+
+}
+
 void drawAll(Game * game, Monster * Monsters, int count){
     MLV_clear_window(MLV_COLOR_BLACK);
     draw_grid_with_path(game->grid, game->path, game->pathSize);
     drawMonsters(Monsters, count);
     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
+    for (int i = 0; i < game->tower_count; i++) {
+        drawTower(&(game->towers[i]));
+    }
     draw_side_information(game);
     for (int i = 0; i < count; i++) {
         drawMonsterHealthBar(&Monsters[i], game->pathSize);
+        // printf("%d\n",Monsters[i].pathIndex);
     }
     MLV_actualise_window();
 }

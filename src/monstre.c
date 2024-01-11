@@ -2,32 +2,24 @@
 #include <math.h>
 #include <stdlib.h>
 
-int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime) {
-     // One second between each monster spawn
-    int count = 0;
-    if(monsters[0].type == BOSS) {count = 2;}
-    else if(monsters[0].type == CROWD) {count = 24;}
-    else {count = 12;}
+int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game) {
+    int count = (monsters[0].type == BOSS) ? 2 : (monsters[0].type == CROWD) ? 24 : 12;
+
     for (int i = 0; i < count; i++) {
-        // Skip dead monsters
         if (monsters[i].hp <= 0) continue;
 
-        // Handle spawning delay for each monster
         if (monsters[i].pathIndex < 0) {
             monsters[i].pathIndex += deltaTime;
-            if (monsters[i].pathIndex >= 0) {
-                monsters[i].pathIndex = 0; 
-            } else {
-                continue; 
-            }
+            if (monsters[i].pathIndex < 0) continue;
+            monsters[i].pathIndex = 0;
         }
 
-        
-        float distanceToMove = monsters[i].speed * deltaTime;
+        float fluctuation = 0.9 + (rand() % 21) / 100.0; // Random between 0.9 and 1.1
+        float adjustedSpeed = monsters[i].speed * fluctuation;
 
-       
+        float distanceToMove = adjustedSpeed * deltaTime;
+
         while (distanceToMove > 0 && monsters[i].pathIndex < pathSize - 1) {
-            
             float dx = path[monsters[i].pathIndex + 1].x - monsters[i].x;
             float dy = path[monsters[i].pathIndex + 1].y - monsters[i].y;
             float segmentLength = sqrt(dx * dx + dy * dy);
@@ -50,10 +42,22 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
                 monsters[i].pathIndex++;
             }
         }
+
+        if (monsters[i].pathIndex >= pathSize - 1) {
+            // Respawn at the start of the path
+            monsters[i].x = path[0].x;
+            monsters[i].y = path[0].y;
+            monsters[i].pathIndex = 0;
+
+            // Deduct mana as penalty for letting monster reach the base
+            game->mana -= monsters[i].mana_penalty;
+            if (game->mana < 0) {
+                game->quit = 1; // End the game if mana falls below zero
+            }
+        }
     }
     return count;
 }
-
 
 static MonsterType selectWaveType(int waveNumber) {
     float randomValue = (float)rand() / RAND_MAX;
