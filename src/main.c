@@ -19,13 +19,13 @@ int main()
         .path = NULL,
         .pathSize = 0,
         .quit = 0,
-        .nb_tour = 0,
+        .nb_tower = 0,
         .level_mana = 0,
         .level_gemme_in_shop = 0,
-        .built_tower_count = INITIAL_FREE_TOWERS,
         .want_to_place_tower = 0,
-        .tower_placement_cost = INITIAL_TOWER_COST,
-        .tower_count = 0};
+        // .tower_placement_cost = INITIAL_TOWER_COST,
+        .tower_count = 0
+        };
 
     const int frameDelay = 1000 / 60;
     MLV_change_frame_rate(60);
@@ -67,7 +67,6 @@ int main()
         }
 
         drawAll(&game, Monsters, monster_count);
-        MLV_actualise_window();
 
         int frameTime = MLV_get_time() - currentTime;
         if (frameTime < frameDelay)
@@ -75,8 +74,6 @@ int main()
             MLV_delay_according_to_frame_rate(frameDelay, frameTime);
         }
     }
-    MLV_actualise_window();
-
     MLV_free_window();
     if (game.path != NULL)
     {

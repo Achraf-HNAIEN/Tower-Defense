@@ -80,7 +80,7 @@ static void draw_wave_numberMana(Game * game){
 }
 
 static void draw_shop(Game * game){
-    int tower_cost = game->nb_tour < 3? 0 : 100 * pow(2,(game->nb_tour+1)-4);
+    int tower_cost = game->nb_tower < 3? 0 : 100 * pow(2,(game->nb_tower+1)-4);
     int sizeShop;
     int gemme_cost = 100* pow(2,game->level_gemme_in_shop);
     MLV_get_size_of_text("Shop :",&sizeShop, NULL);
@@ -88,7 +88,7 @@ static void draw_shop(Game * game){
 
     MLV_draw_text_box(WIDTH * CELL_SIZE + 5, 162, 92, 50,
     "Tower:\n %d mana", 1, MLV_COLOR_GREEN, MLV_COLOR_WHITE,
-    MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,
+    game->want_to_place_tower ? MLV_COLOR_LIGHT_GREEN : MLV_COLOR_BLACK,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,
     MLV_VERTICAL_CENTER, tower_cost); 
 
 
@@ -198,13 +198,15 @@ void drawTower(const Tower *tower) {
 
 void drawAll(Game * game, Monster * Monsters, int count){
     MLV_clear_window(MLV_COLOR_BLACK);
+    draw_side_information(game);
+
     draw_grid_with_path(game->grid, game->path, game->pathSize);
     drawMonsters(Monsters, count);
     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
     for (int i = 0; i < game->tower_count; i++) {
         drawTower(&(game->towers[i]));
     }
-    draw_side_information(game);
+    
     for (int i = 0; i < count; i++) {
         drawMonsterHealthBar(&Monsters[i], game->pathSize);
         // printf("%d\n",Monsters[i].pathIndex);
