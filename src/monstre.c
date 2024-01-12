@@ -1,6 +1,7 @@
-#include "monstre.h"
 #include <math.h>
 #include <stdlib.h>
+
+#include "monstre.h"
 
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game) {
     int count = (monsters[0].type == BOSS) ? 2 : (monsters[0].type == CROWD) ? 24 : 12;
@@ -44,15 +45,15 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
         }
 
         if (monsters[i].pathIndex >= pathSize - 1) {
-            // Respawn at the start of the path
+            
             monsters[i].x = path[0].x;
             monsters[i].y = path[0].y;
             monsters[i].pathIndex = 0;
 
-            // Deduct mana as penalty for letting monster reach the base
+            
             game->mana -= monsters[i].mana_penalty;
             if (game->mana < 0) {
-                game->quit = 1; // End the game if mana falls below zero
+                game->quit = 1; 
             }
         }
     }
@@ -62,7 +63,7 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
 static MonsterType selectWaveType(int waveNumber) {
     float randomValue = (float)rand() / RAND_MAX;
 
-    // For first 5 waves, exclude the BOSS wave type
+   
     if (waveNumber <= 5) {
         if (randomValue < PROB_NORMAL) {
             return NORMAL;
@@ -72,7 +73,7 @@ static MonsterType selectWaveType(int waveNumber) {
             return AGILE;
         }
     } else {
-        // Include BOSS wave type for wave numbers above 5
+        
         if (randomValue < PROB_NORMAL) {
             return NORMAL;
         } else if (randomValue < PROB_NORMAL + PROB_CROWD) {

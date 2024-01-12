@@ -24,6 +24,9 @@ typedef struct{
   // int tower_placement_cost;
   Tower towers[MAX_TOWERS]; 
   int tower_count;
+  int last_wave_time;
+  int manual_trigger_bonus;
+  int manual_trigger;
   }Game;
 
 void placeTower(Game *game, Point position, Gemme *gemme);

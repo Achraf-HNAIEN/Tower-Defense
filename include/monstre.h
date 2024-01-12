@@ -4,7 +4,6 @@
 #include "grid.h"
 #include "game.h"
 
-
 #define WAVE_INTERVAL 35  // Interval in seconds
 #define PROB_NORMAL 0.50  // Proba normal wave
 #define PROB_CROWD  0.20  // Proba crowd wave

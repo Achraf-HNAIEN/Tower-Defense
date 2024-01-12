@@ -1,48 +1,43 @@
 #ifndef GEMME_H
 #define GEMME_H
 
-// typedef enum {
-//     ROUGE,
-//     VERTE,
-//     BLEU
-// }type;
-
-// typedef struct {
-//     type type;
-//     short teinte;
-//     short niveau;
-// }Gemme_pure;
-
-// typedef struct {
-//     short teinte;
-//     short niveau;
-// }Gemme;
-
-
-
+//#include "monstre.h"
+typedef struct Monster Monster;
 typedef enum {
     PURE,
     MIXTE
 } TypeGemme;
 
-// Elemental types for pure gemmes
 typedef enum {
-    PYRO,   // Red
-    DENDRO, // Green
-    HYDRO   // Blue
+    PYRO,   //red
+    DENDRO, //green
+    HYDRO   //blue
 } ElementType;
 
 typedef struct {
-    TypeGemme type;          
-    int niveau;              
-    int teinte;              
-    ElementType elementType; 
-    float cooldown;          
+    TypeGemme type;          //PURE | MIXTE
+    int niveau;
+    int teinte;           
+    ElementType elementType; // The elemental type, only relevant for PURE
+    float cooldown;          //in seconds pls
+    int range;               // Range of fire for the gemme
+
 } Gemme;
 
-Gemme generate_new_random_gemme();
-//Gemme_pure generate_new_random_gemme_pure(Gemme);
-Gemme createGemme(TypeGemme type, int niveau, int teinte, ElementType elementType);
+
+Gemme generate_new_pure_gemme(int niveau);
+
+Gemme createGemme(TypeGemme type, int niveau, int teinte, ElementType elementType, int range);
+
 void upgradeGemme(Gemme *gemme);
+
+double calculateGemmeDamage(const Gemme *gemme, int targetHue);
+
+// a reajuster
+void applyElementalEffect(const Gemme *gemme,Monster *monster);
+
+Gemme fuseGemmes(const Gemme *gemme1, const Gemme *gemme2);
+
+int determineGemmeCost(int niveau);
 
 #endif // GEMME_H
