@@ -1,8 +1,8 @@
 #ifndef GEMME_H
 #define GEMME_H
 
-//#include "monstre.h"
 typedef struct Monster Monster;
+
 typedef enum {
     PURE,
     MIXTE
@@ -21,7 +21,6 @@ typedef struct {
     ElementType elementType; // The elemental type, only relevant for PURE
     float cooldown;          //in seconds pls
     int range;               // Range of fire for the gemme
-
 } Gemme;
 
 
@@ -40,4 +39,4 @@ Gemme fuseGemmes(const Gemme *gemme1, const Gemme *gemme2);
 
 int determineGemmeCost(int niveau);
 
-#endif // GEMME_H
+#endif

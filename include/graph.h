@@ -21,6 +21,6 @@
 //void draw_start_and_finish(Point start, Point finish);
 //void drawMonsters(Monster monsters[], int count);
 int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height);
-void drawAll(Game * , Monster * , int );
+void drawAll(Game *game);
 //void draw_side_information(Game *);
 #endif

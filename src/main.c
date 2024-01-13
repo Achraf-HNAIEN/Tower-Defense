@@ -23,78 +23,119 @@ int main() {
         .level_gemme_in_shop = 0,
         .want_to_place_tower = 0,
         .tower_count = 0,
-        .last_wave_time = MLV_get_time(), // Add this to track the last wave trigger time
-        .manual_trigger = 0, // Add this to handle manual wave triggering
+        .last_wave_time = MLV_get_time(),
+        .manual_trigger = 0,
+        .max_active_waves = 6,
+        .num_active_waves = 0,
+        .active_waves = (Wave **)malloc(game.max_active_waves * sizeof(Wave *)),
     };
+
+    // Ensure all wave pointers are initialized to NULL
+    for (int i = 0; i < game.max_active_waves; i++) {
+        game.active_waves[i] = NULL;
+    }
 
     const int frameDelay = 1000 / 60;
     MLV_change_frame_rate(60);
 
     generatePath(game.grid, &game.path, &game.pathSize);
-    Monster *Monsters = initializeWave(game.wave, game.path, game.pathSize);
+
+    // Initialize the first wave
+    Wave *firstWave = initializeWave(game.wave, game.path, game.pathSize);
+    game.active_waves[0] = firstWave;
+    game.num_active_waves = 1;
+
     int previousTime = MLV_get_time();
 
     while (!game.quit) {
         int currentTime = MLV_get_time();
         float deltaTime = (currentTime - previousTime) / 1000.0f;
         previousTime = currentTime;
-        MLV_actualise_window();
-       
+
+        // Check for wave creation and update
         if ((currentTime - game.last_wave_time) >= WAVE_INTERVAL * 1000 || game.manual_trigger) {
-            
             if (game.manual_trigger) {
+                // Bonus mana for manual trigger
                 int bonus = (WAVE_INTERVAL - (currentTime - game.last_wave_time) / 1000.0f) * game.mana_max / 100;
                 game.mana += bonus;
             }
 
-            free(Monsters); 
-            Monsters = initializeWave(++game.wave, game.path, game.pathSize);
+            // Only add a new wave if we haven't hit the max
+            if (game.num_active_waves < game.max_active_waves) {
+                Wave *newWave = initializeWave(++game.wave, game.path, game.pathSize);
+                game.active_waves[game.num_active_waves++] = newWave;
+            }
             game.last_wave_time = currentTime;
-            game.manual_trigger = 0; 
+            game.manual_trigger = 0;
         }
 
-        // Update monsters
-        int monster_count = moveMonsters(Monsters, game.path, game.pathSize, deltaTime, &game);
+        // Update all active waves
+        for (int i = 0; i < game.num_active_waves; i++) {
+            if (game.active_waves[i] != NULL) {
+                updateWave(game.active_waves[i], deltaTime, &game);
+            }
+        }
 
-        MLV_Event event;
-        int mouse_x, mouse_y;
-        MLV_Button_state state;
-        MLV_Keyboard_button key;
+        // Handle MLV events
+        MLV_Event event = MLV_get_event(
+            NULL, NULL, NULL,
+            NULL, NULL,
+            NULL, NULL, NULL,
+            NULL
+        );
 
-        event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y, NULL, &state);
-
-        if (event == MLV_MOUSE_BUTTON && state == MLV_PRESSED) {
-            printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
+        if (event == MLV_MOUSE_BUTTON)        {
+            int mouse_x, mouse_y;
+            MLV_get_mouse_position(&mouse_x, &mouse_y);
             if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92, 50)) {
                 printf("Tower placement button clicked.\n");
                 game.want_to_place_tower = !game.want_to_place_tower;
             } else if (game.want_to_place_tower) {
                 Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
                 if (isWithinBounds(gridPosition.x, gridPosition.y)) {
-                    Gemme *newGem = NULL;
+                    Gemme *newGem = NULL; // Here you would create a new Gemme based on user input
                     placeTower(&game, gridPosition, newGem);
                 }
-            } else if (event == MLV_KEY && state == MLV_PRESSED && key == MLV_KEYBOARD_SPACE) {
+            }
+        } else if (event == MLV_KEY) {
+            MLV_Keyboard_button key;
+            MLV_get_keyboard_state(&key);
+            if (key == MLV_KEYBOARD_SPACE) {
                 game.manual_trigger = 1;
                 game.last_wave_time = currentTime - WAVE_INTERVAL * 1000;
             }
         }
 
-        drawAll(&game, Monsters, monster_count);
+        // Draw everything
+        drawAll(&game);
 
         // Frame rate control
         int frameTime = MLV_get_time() - currentTime;
         if (frameTime < frameDelay) {
             MLV_delay_according_to_frame_rate(frameDelay, frameTime);
         }
+        
+        // Check for game quit condition
+        if (game.quit) {
+            break;
+        }
+        
+        // Actualise the window
+        MLV_actualise_window();
     }
 
     // Cleanup
     MLV_free_window();
-    free(Monsters); 
+    for (int i = 0; i < game.num_active_waves; i++) {
+        if (game.active_waves[i] != NULL) {
+            freeWave(game.active_waves[i]);
+        }
+    }
+    free(game.active_waves);
     if (game.path != NULL) {
         free(game.path);
     }
 
     return 0;
 }
+

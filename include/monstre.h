@@ -50,6 +50,15 @@ typedef struct Monster {
 } Monster;
 
 
+
+
 Monster * initializeWave(int waveNumber, Point path[], int pathSize);
+
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game);
+void addWave(Game *game, Wave *newWave);
+void triggerNewWave(Game *game);
+void freeWave(Wave *wave);
+void freeAllWaves(Game *game);
+
+
 #endif

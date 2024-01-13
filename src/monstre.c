@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "monstre.h"
 
@@ -146,4 +147,39 @@ Monster * initializeWave(int waveNumber, Point path[], int pathSize) {
         
     }
     return monsters;
+}
+
+void addWave(Game *game, Wave *newWave) {
+    if (game->num_active_waves >= game->max_active_waves) {
+        // Increase the size of the active_waves array
+        game->max_active_waves *= 2;
+        game->active_waves = realloc(game->active_waves, game->max_active_waves * sizeof(Wave *));
+    }
+
+    // Add the new wave to the array and increment the count
+    game->active_waves[game->num_active_waves] = newWave;
+    game->num_active_waves++;
+}
+
+void triggerNewWave(Game *game) {
+    Wave *newWave = initializeWave(game->wave, game->path, game->pathSize);
+    addWave(game, newWave);
+    game->wave++;
+}
+void freeAllWaves(Game *game) {
+    for (int i = 0; i < game->num_active_waves; i++) {
+        freeWave(game->active_waves[i]);
+    }
+    free(game->active_waves);
+}
+void freeWave(Wave *wave) {
+    if (wave == NULL) {
+        return; // Nothing to do
+    }
+
+    if (wave->monsters != NULL) {
+        free(wave->monsters);
+        wave->monsters = NULL; 
+    }
+    free(wave);
 }
