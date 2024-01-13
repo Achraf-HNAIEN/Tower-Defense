@@ -1,66 +1,11 @@
 #include "monstre.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game) {
-    if ( !monsters ) return 0;
-    int count = (monsters[0].type == BOSS) ? 2 : (monsters[0].type == CROWD) ? 24 : 12;
 
-    for (int i = 0; i < count; i++) {
-        if (monsters[i].hp <= 0) continue;
 
-        if (monsters[i].pathIndex < 0) {
-            monsters[i].pathIndex += deltaTime;
-            if (monsters[i].pathIndex < 0) continue;
-            monsters[i].pathIndex = 0;
-        }
-
-        float fluctuation = 0.9 + (rand() % 21) / 100.0; // Random between 0.9 and 1.1
-        float adjustedSpeed = monsters[i].speed * fluctuation;
-
-        float distanceToMove = adjustedSpeed * deltaTime;
-
-        while (distanceToMove > 0 && monsters[i].pathIndex < pathSize - 1) {
-            float dx = path[monsters[i].pathIndex + 1].x - monsters[i].x;
-            float dy = path[monsters[i].pathIndex + 1].y - monsters[i].y;
-            float segmentLength = sqrt(dx * dx + dy * dy);
-
-            if (segmentLength == 0) {
-                monsters[i].pathIndex++;
-                continue;
-            }
-
-            dx /= segmentLength;
-            dy /= segmentLength;
-
-            float step = fmin(distanceToMove, segmentLength);
-
-            monsters[i].x += dx * step;
-            monsters[i].y += dy * step;
-            distanceToMove -= step;
-
-            if (step == segmentLength) {
-                monsters[i].pathIndex++;
-            }
-        }
-
-        if (monsters[i].pathIndex >= pathSize - 1) {
-            // Respawn at the start of the path
-            monsters[i].x = path[0].x;
-            monsters[i].y = path[0].y;
-            monsters[i].pathIndex = 0;
-
-            // Deduct mana as penalty for letting monster reach the base
-            game->mana -= monsters[i].mana_penalty;
-            if (game->mana < 0) {
-                game->quit = 1; // End the game if mana falls below zero
-            }
-        }
-    }
-    return count;
-}
-
-static MonsterType selectWaveType(int waveNumber) {
+MonsterType selectWaveType(int waveNumber) {
     float randomValue = (float)rand() / RAND_MAX;
 
     // For first 5 waves, exclude the BOSS wave type
@@ -87,7 +32,7 @@ static MonsterType selectWaveType(int waveNumber) {
 }
 
 
-Monster * initializeWave(int waveNumber, Point path[], int pathSize) {
+Monster * initialize_Monster(int waveNumber, Point path[], int pathSize) {
     MonsterType waveType = selectWaveType(waveNumber);
     Monster * monsters;
     if(waveType == BOSS){
@@ -147,3 +92,5 @@ Monster * initializeWave(int waveNumber, Point path[], int pathSize) {
     }
     return monsters;
 }
+
+

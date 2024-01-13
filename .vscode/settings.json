@@ -3,6 +3,9 @@
     "grid.h": "c",
     "math.h": "c",
     "tower.h": "c",
-    "monstre.h": "c"
+    "monstre.h": "c",
+    "game.h": "c",
+    "wave.h": "c",
+    "cmath": "c"
   }
 }

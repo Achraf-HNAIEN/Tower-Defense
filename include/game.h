@@ -4,10 +4,14 @@
 
 #include "grid.h"
 #include "tower.h"
+#include "monstre.h"
 
+typedef struct _Wave{
+    Monster *monsters;
+    int Nb_Monsters;
+    struct _Wave *next;
 
-
-
+}Wave;
 
 typedef struct{
   int wave;
@@ -24,8 +28,24 @@ typedef struct{
   // int tower_placement_cost;
   Tower towers[MAX_TOWERS]; 
   int tower_count;
+  Wave *waves;
+  Wave *wavesHead;
+  int wave_count;
+  Gemme inventaire[6];
+  short inventory_size;
   }Game;
 
+
+int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game);
+Wave* initializeWave(int waveNumber, Point path[], int pathSize);
+
 void placeTower(Game *game, Point position, Gemme *gemme);
+
+/*Add 'mana' to the player mana storage.*/
 void add_mana(Game * game, int mana);
+
+/*Try to upgrade mana storage of the player*/
+void upgrade_mana_storage(Game *);
+
+
 #endif

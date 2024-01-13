@@ -24,14 +24,17 @@ int main()
         .level_gemme_in_shop = 0,
         .want_to_place_tower = 0,
         // .tower_placement_cost = INITIAL_TOWER_COST,
-        .tower_count = 0
+        .tower_count = 0,
+        .wavesHead = NULL,
+        .inventory_size = 0
         };
 
+    
     const int frameDelay = 1000 / 60;
     MLV_change_frame_rate(60);
     generatePath(game.grid, &game.path, &game.pathSize);
     // Monster *Monsters = NULL ;
-    Monster *Monsters =  initializeWave(game.wave, game.path, game.pathSize) ; // A FAIRE : attendre que le joueur déclenche la première wave.
+    Monster *Monsters =  initialize_Monster(game.wave, game.path, game.pathSize) ; // A FAIRE : attendre que le joueur déclenche la première wave.
     int previousTime = MLV_get_time();
     int last_wave_time = previousTime;
     while (!game.quit)
@@ -67,11 +70,20 @@ int main()
                     game.want_to_place_tower = !game.want_to_place_tower;
                 }
             }
+            else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 181, 146,17,17) && game.level_gemme_in_shop < 12){
+                game.level_gemme_in_shop++;
+            }
+            else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 181, 211,17,17) && game.level_gemme_in_shop > 0 ){
+                game.level_gemme_in_shop--;
+            }
+            else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 15, 80, 170, 50)){
+                upgrade_mana_storage(&game);
+            }
         }
         
         else if ( (event == MLV_KEY  && key == MLV_KEYBOARD_SPACE && state == MLV_RELEASED) || currentTime - last_wave_time >= WAVE_INTERVAL * 1000){
             // nouvelle vague de monstres
-            Monsters = initializeWave(game.wave, game.path, game.pathSize);
+            Monsters = initialize_Monster(game.wave, game.path, game.pathSize);
             last_wave_time = MLV_get_time();
             add_mana(&game, (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000.0f) * (game.mana_max / 100)) ;
             game.wave++;

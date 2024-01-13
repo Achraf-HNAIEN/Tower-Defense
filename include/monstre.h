@@ -2,7 +2,6 @@
 #define MONSTRE_H
 
 #include "grid.h"
-#include "game.h"
 
 
 #define WAVE_INTERVAL 35  // Interval in seconds
@@ -51,6 +50,7 @@ typedef struct Monster {
 } Monster;
 
 
-Monster * initializeWave(int waveNumber, Point path[], int pathSize);
-int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game);
+
+Monster * initialize_Monster(int waveNumber, Point path[], int pathSize);
+MonsterType selectWaveType(int waveNumber);
 #endif

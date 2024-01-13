@@ -236,3 +236,30 @@ void drawAll(Game * game, Monster * Monsters, int count){
     }
     drawManaBar(game);
 }
+
+
+// void drawAll(Game *game) {
+//     MLV_clear_window(MLV_COLOR_BLACK);
+//     draw_side_information(game);
+//     draw_grid_with_path(game->grid, game->path, game->pathSize);
+
+//     // Iterate through each wave and draw the monsters within it
+//     for (int w = 0; w < game->num_active_waves; w++) {
+//         if (game->active_waves[w] != NULL) {
+//             drawMonsters(game->active_waves[w]->monsters, game->active_waves[w]->num_monsters);
+            
+//             // Draw health bars for each monster in the wave
+//             for (int i = 0; i < game->active_waves[w]->num_monsters; i++) {
+//                 drawMonsterHealthBar(&(game->active_waves[w]->monsters[i]), game->pathSize);
+//             }
+//         }
+//     }
+
+//     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
+
+//     // Draw towers and mana bar
+//     for (int i = 0; i < game->tower_count; i++) {
+//         drawTower(&(game->towers[i]));
+//     }
+//     drawManaBar(game);
+// }
