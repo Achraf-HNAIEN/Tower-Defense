@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game) {
+    if ( !monsters ) return 0;
     int count = (monsters[0].type == BOSS) ? 2 : (monsters[0].type == CROWD) ? 24 : 12;
 
     for (int i = 0; i < count; i++) {

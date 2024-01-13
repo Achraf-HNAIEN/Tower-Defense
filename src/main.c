@@ -29,24 +29,26 @@ int main()
 
     const int frameDelay = 1000 / 60;
     MLV_change_frame_rate(60);
-
     generatePath(game.grid, &game.path, &game.pathSize);
-    Monster *Monsters = initializeWave(game.wave, game.path, game.pathSize);
+    // Monster *Monsters = NULL ;
+    Monster *Monsters =  initializeWave(game.wave, game.path, game.pathSize) ; // A FAIRE : attendre que le joueur déclenche la première wave.
     int previousTime = MLV_get_time();
-
+    int last_wave_time = previousTime;
     while (!game.quit)
     {
+
         int currentTime = MLV_get_time();
         float deltaTime = (currentTime - previousTime) / 1000.0f;
         previousTime = currentTime;
-
+        MLV_actualise_window();
         int monster_count = moveMonsters(Monsters, game.path, game.pathSize, deltaTime, &game);
         MLV_Event event;
         int mouse_x, mouse_y;
         MLV_Button_state state;
-        event = MLV_get_event(NULL, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y, NULL, &state);
+        MLV_Keyboard_button key;
+        event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y, NULL, &state);
 
-        if (event == MLV_MOUSE_BUTTON && state == MLV_PRESSED)
+        if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED)
         {
             printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
             if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92, 50))
@@ -62,8 +64,17 @@ int main()
                     //attemptPlaceTower(&game, gridPosition);
                     Gemme *newGem = NULL;
                     placeTower(&game, gridPosition, newGem);
+                    game.want_to_place_tower = !game.want_to_place_tower;
                 }
             }
+        }
+        
+        else if ( (event == MLV_KEY  && key == MLV_KEYBOARD_SPACE && state == MLV_RELEASED) || currentTime - last_wave_time >= WAVE_INTERVAL * 1000){
+            // nouvelle vague de monstres
+            Monsters = initializeWave(game.wave, game.path, game.pathSize);
+            last_wave_time = MLV_get_time();
+            add_mana(&game, (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000.0f) * (game.mana_max / 100)) ;
+            game.wave++;
         }
 
         drawAll(&game, Monsters, monster_count);

@@ -27,4 +27,5 @@ typedef struct{
   }Game;
 
 void placeTower(Game *game, Point position, Gemme *gemme);
+void add_mana(Game * game, int mana);
 #endif

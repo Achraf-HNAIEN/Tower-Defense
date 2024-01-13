@@ -44,3 +44,7 @@ void placeTower(Game *game, Point gridPosition, Gemme *gemme) {
     // Call the function to update the graphics
     // RedrawGame(game); // Uncomment or implement this as needed
 }
+
+void add_mana(Game * game, int mana){
+    game->mana = game->mana + mana >= game->mana_max ? game->mana_max : game->mana + mana;
+}

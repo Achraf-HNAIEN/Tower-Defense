@@ -146,7 +146,7 @@ static void drawMonsterHealthBar(Monster *monster, int pathsize) {
     MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, MLV_COLOR_GREY);
     MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, (int)(HEALTH_BAR_WIDTH * healthRatio), HEALTH_BAR_HEIGHT, healthColor);
 }
-
+    
 
 static void draw_side_information(Game * game){
     
@@ -193,6 +193,30 @@ void drawTower(const Tower *tower) {
     
     MLV_draw_circle(centerX, centerY, towerSize, MLV_COLOR_WHITE);
     //printf("Drawing tower at: x=%d, y=%d, size=%d\n", centerX, centerY, towerSize);
+}
+
+void drawManaBar(Game *game) {
+    int manaBarWidth = 400; 
+    int manaBarHeight = 25; 
+    int manaBarX = (((WIDTH*CELL_SIZE)/2) - (manaBarWidth/2));
+    int manaBarY = CELL_SIZE - (CELL_SIZE*0.4);
+    
+    int filledManaBarWidth = (int)((float)manaBarWidth * ((float)game->mana / (float)game->mana_max));
+    
+    MLV_draw_filled_rectangle(manaBarX, manaBarY, manaBarWidth, manaBarHeight, MLV_COLOR_LIGHT_BLUE);
+    
+    MLV_draw_filled_rectangle(manaBarX, manaBarY, filledManaBarWidth, manaBarHeight, MLV_COLOR_BLUE);
+
+    char manaText[50];
+    snprintf(manaText, 50, "Mana: %d/%d", game->mana, game->mana_max);
+    MLV_draw_text(
+        manaBarX + manaBarWidth / 3, 
+        manaBarY + manaBarHeight / 3, 
+        manaText, 
+        MLV_COLOR_WHITE
+    );
+
+    MLV_draw_rectangle(manaBarX, manaBarY, manaBarWidth, manaBarHeight, MLV_COLOR_WHITE);
 
 }
 
@@ -209,7 +233,6 @@ void drawAll(Game * game, Monster * Monsters, int count){
     
     for (int i = 0; i < count; i++) {
         drawMonsterHealthBar(&Monsters[i], game->pathSize);
-        // printf("%d\n",Monsters[i].pathIndex);
     }
-    MLV_actualise_window();
+    drawManaBar(game);
 }
