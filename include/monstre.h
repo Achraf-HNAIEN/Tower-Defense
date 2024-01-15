@@ -53,4 +53,5 @@ typedef struct Monster {
 
 Monster * initialize_Monster(int waveNumber, Point path[], int pathSize);
 MonsterType selectWaveType(int waveNumber);
+void applay_Damage(Monster * monster, float damage);
 #endif

@@ -119,9 +119,20 @@ static void draw_fusion_and_inventory(Game * game){
 
     for(int i = 0 ; i < 2 ; i++){
         for(int j = 0 ; j < 3 ; j++){
-            MLV_draw_rectangle(WIDTH * CELL_SIZE + 25 + (i*2) * 50,
-            315 + (j*80),
-            50,50,MLV_COLOR_LIGHTGRAY );
+            
+            if(game->gemme_selected == i + j*2){
+                MLV_draw_filled_rectangle(WIDTH * CELL_SIZE + 25 + (i * 100 ),
+                    315 + (j*80),
+                    50,50,MLV_rgba(30,255,30,120));
+            }
+           MLV_draw_rectangle(WIDTH * CELL_SIZE + 25 + (i * 100 ),
+                    315 + (j*80),
+                    50,50,MLV_COLOR_LIGHTGRAY );
+            
+            if( game->inventory_size > i + j*2 ){
+                MLV_draw_filled_circle(WIDTH * CELL_SIZE + 50 + (i * 100 ), 340 + (j*80), 15, hueToRGB(game->inventaire[i + j*2].teinte));
+                MLV_draw_text(WIDTH * CELL_SIZE + 50 + (i * 100 ) -3, 340 + (j*80)-6,"%d",MLV_COLOR_BLACK, game->inventaire[i + j*2].niveau);
+            }
         }
     }
 }
@@ -237,6 +248,20 @@ void drawManaBar(Game *game) {
 //     drawManaBar(game);
 // }
 
+void draw_next_wave_time(Game * game){
+    int len_x, len_y;
+    if (game->has_start){
+        MLV_get_size_of_adapted_text_box(" Temps avant la prochaine vague : %d ",2, &len_x, &len_y, game->next_wave_time);
+        int information_x = ((WIDTH*CELL_SIZE)/2) - (len_x/2);
+        int information_y = ((HEIGHT*CELL_SIZE)) - CELL_SIZE * 2 + len_y/2;
+        MLV_draw_adapted_text_box(information_x, information_y," Temps avant la prochaine vague : %d ",2, MLV_COLOR_BLACK,MLV_COLOR_RED3,MLV_COLOR_GRAY,MLV_TEXT_CENTER, game->next_wave_time);
+    }else{
+        MLV_get_size_of_adapted_text_box(" Appuyez sur 'espace' pour lancer le jeu ",2,&len_x, &len_y);
+        int information_x = ((WIDTH*CELL_SIZE)/2) - (len_x/2);
+        int information_y = ((HEIGHT*CELL_SIZE)) - CELL_SIZE * 2 + + len_y/2;
+        MLV_draw_adapted_text_box(information_x, information_y," Appuyez sur 'espace' pour lancer le jeu ",2, MLV_COLOR_BLACK,MLV_COLOR_RED3,MLV_COLOR_GRAY,MLV_TEXT_CENTER);
+    }
+}
 
 void drawAll(Game *game, Wave *headWave) {
     MLV_clear_window(MLV_COLOR_BLACK);
@@ -260,4 +285,5 @@ void drawAll(Game *game, Wave *headWave) {
     }
 
     drawManaBar(game);
+    draw_next_wave_time(game);
 }

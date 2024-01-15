@@ -5,6 +5,9 @@
 #include "graph.h"
 #include "game.h"
 #include "tower.h"
+// https://elearning.univ-eiffel.fr/pluginfile.php/477685/mod_resource/content/5/projet-tower-defense-compressed.pdf
+
+
 
 int main() {
     srand(time(NULL));
@@ -24,9 +27,10 @@ int main() {
         .want_to_place_tower = 0,
         .tower_count = 0,
         .wavesHead = NULL,
-        .inventory_size = 0
+        .inventory_size = 0,
+        .has_start = 0,
+        .gemme_selected = -1 // -1 mean no gemme selected
     };
-
     Wave* headWave = NULL;  // Head of the waves linked list
     Wave* currentWave;      // Current wave pointer for iteration
 
@@ -36,7 +40,7 @@ int main() {
 
     int previousTime = MLV_get_time();
     int last_wave_time = previousTime;
-
+    drawAll(&game, NULL);
     while (!game.quit) {
         int currentTime = MLV_get_time();
         float deltaTime = (currentTime - previousTime) / 1000.0f;
@@ -56,7 +60,7 @@ int main() {
         MLV_Button_state state;
         MLV_Keyboard_button key;
         event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y, NULL, &state);
-
+        
         if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED) {
             printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
             if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92, 50)) {
@@ -76,10 +80,15 @@ int main() {
             } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 15, 80, 170, 50)) {
                 upgrade_mana_storage(&game);
             }
+            else if(is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 105, 162, 93, 50)){
+               buy_gemme(&game);
+            }
+            else if(is_click_inside(mouse_x,mouse_y, WIDTH * CELL_SIZE + 25, 315,150,210)){
+                handle_inventory_click(mouse_x, mouse_y, &game);
+            }
         }
-
         // Check for new wave trigger
-        if ((event == MLV_KEY && key == MLV_KEYBOARD_SPACE && state == MLV_RELEASED) || currentTime - last_wave_time >= WAVE_INTERVAL * 1000) {
+        else if (game.has_start && ((event == MLV_KEY && key == MLV_KEYBOARD_SPACE && state == MLV_RELEASED) || currentTime - last_wave_time >= WAVE_INTERVAL * 1000)) {
             Wave* newWave = initializeWave(game.wave, game.path, game.pathSize);
 
             // Append the new wave to the list
@@ -92,17 +101,40 @@ int main() {
                 }
                 temp->next = newWave;
             }
-
+            
+            add_mana(&game, (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000) * (game.mana_max / 100));
             last_wave_time = MLV_get_time();
-            add_mana(&game, (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000.0f) * (game.mana_max / 100));
             game.wave++;
         }
+        else if(!game.has_start && (event == MLV_KEY && key == MLV_KEYBOARD_SPACE && state == MLV_RELEASED)){
+            game.has_start = !game.has_start;
+            Wave* newWave = initializeWave(game.wave, game.path, game.pathSize);
+            if (headWave == NULL) {
+                headWave = newWave;
+            } else {
+                Wave* temp = headWave;
+                while (temp->next != NULL) {
+                    temp = temp->next;
+                }
+                temp->next = newWave;
+            }
+            last_wave_time = MLV_get_time();
+        }
+
+        game.next_wave_time = (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000);
 
         // Draw everything
         currentWave = headWave;
-        while (currentWave != NULL) {
-            drawAll(&game, headWave);
-            currentWave = currentWave->next;
+        if(NULL == currentWave){
+            drawAll(&game, NULL);
+        }else{
+            while (currentWave != NULL) {
+                drawAll(&game, headWave);
+                currentWave = currentWave->next;
+            }
+        }
+        if(game.want_to_place_tower && mouse_x >= 0 && mouse_y >= 0 && mouse_x <= WIDTH*CELL_SIZE && mouse_y <= HEIGHT*CELL_SIZE){
+            MLV_draw_filled_circle(mouse_x, mouse_y, CELL_SIZE*3, MLV_rgba(0,255,0,120));
         }
 
         // Frame rate control

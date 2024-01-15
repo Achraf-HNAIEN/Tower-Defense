@@ -55,7 +55,7 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
             monsters[i].pathIndex = 0;
 
             // Deduct mana as penalty for letting monster reach the base
-            game->mana -= monsters[i].mana_penalty;
+            game->mana -= (int) ((0.15 * monsters->max_hp) * pow(1.3,game->level_mana));
             if (game->mana < 0) {
                 game->quit = 1; // End the game if mana falls below zero
             }
@@ -103,7 +103,12 @@ void add_mana(Game * game, int mana){
 }
 
 
-
+void buy_gemme(Game * game){
+    if (game->inventory_size < 6 && 100 * pow(2,game->level_gemme_in_shop) <= game->mana){
+        game->mana -= 100 * pow(2,game->level_gemme_in_shop);
+        game->inventaire[game->inventory_size++] = createGem(game->level_gemme_in_shop);
+    }
+}   
 
 void upgrade_mana_storage(Game * game){
     if (game->mana >= (int) (500 *  pow(1.4,game->level_mana))){
@@ -130,4 +135,49 @@ Wave* initializeWave(int waveNumber, Point path[], int pathSize) {
     newWave->next = NULL;
 
     return newWave;
+}
+
+void handle_inventory_click(int m_x, int m_y, Game * game){
+    if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315, 50,50)){ // CASE INVENTAIRE 1
+        if(game->inventory_size-1 >= 0 && game->gemme_selected != 0){
+            game->gemme_selected = 0;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
+    else if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315, 50,50)){ // CASE INVENTAIRE 2
+        if(game->inventory_size-1 >= 1 && game->gemme_selected != 1){
+            game->gemme_selected = 1;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
+    else if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 80, 50,50)){ // CASE INVENTAIRE 3
+        if(game->inventory_size-1 >= 2 && game->gemme_selected != 2){
+            game->gemme_selected = 2;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
+    else if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 80, 50,50)){ // CASE INVENTAIRE 4
+        if(game->inventory_size-1 >= 3 && game->gemme_selected != 3){
+            game->gemme_selected = 3;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
+    else if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 160, 50,50)){ // CASE INVENTAIRE 5
+        if(game->inventory_size-1 >= 4 && game->gemme_selected != 4){
+            game->gemme_selected = 4;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
+    else if(is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 160, 50,50)){ // CASE INVENTAIRE 6
+        if(game->inventory_size-1 >= 4 && game->gemme_selected != 4){
+            game->gemme_selected = 4;
+        }else{
+            game->gemme_selected = -1;
+        }
+    }
 }

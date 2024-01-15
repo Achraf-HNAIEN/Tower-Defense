@@ -6,6 +6,10 @@
     "monstre.h": "c",
     "game.h": "c",
     "wave.h": "c",
-    "cmath": "c"
+    "cmath": "c",
+    "gemme.h": "c",
+    "stdlib.h": "c",
+    "__atomic": "c",
+    "stdio.h": "c"
   }
 }

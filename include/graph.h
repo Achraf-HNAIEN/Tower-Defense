@@ -7,7 +7,6 @@
 #include "game.h"
 #include "tower.h"
 
-#define CELL_SIZE 25 
 #define WIDTH 28     
 #define HEIGHT 22    
 #define PATH 1       

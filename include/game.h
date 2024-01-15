@@ -6,6 +6,8 @@
 #include "tower.h"
 #include "monstre.h"
 
+#define CELL_SIZE 25 
+
 typedef struct _Wave{
     Monster *monsters;
     int Nb_Monsters;
@@ -25,7 +27,6 @@ typedef struct{
   int level_gemme_in_shop;
   Point *path;
   int want_to_place_tower; //if the player is in tower placement mode 0 by default and 1 if he is in tower placement mode
-  // int tower_placement_cost;
   Tower towers[MAX_TOWERS]; 
   int tower_count;
   Wave *waves;
@@ -33,11 +34,20 @@ typedef struct{
   int wave_count;
   Gemme inventaire[6];
   short inventory_size;
+  short has_start;
+  int next_wave_time;
+  short gemme_selected;
   }Game;
 
 
+extern int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height);
+
+void handle_inventory_click(int m_x, int m_y, Game * game);
+
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game);
 Wave* initializeWave(int waveNumber, Point path[], int pathSize);
+
+void buy_gemme(Game * game);
 
 void placeTower(Game *game, Point position, Gemme *gemme);
 

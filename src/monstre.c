@@ -93,4 +93,6 @@ Monster * initialize_Monster(int waveNumber, Point path[], int pathSize) {
     return monsters;
 }
 
-
+void applay_Damage(Monster * monster, float damage){
+    monster->hp -= damage;
+}
