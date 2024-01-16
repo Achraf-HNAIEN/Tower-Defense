@@ -459,26 +459,19 @@ void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y)
 
     Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
     Tower *tower = find_Tower_Pos(game, gridPosition);
-    if (game->gemme_selected != -1 && tower != NULL)
+    if (game->gemme_selected >= 0 && game->gemme_selected <= 5 && tower != NULL)
     {
         Gemme *selectedGemme = game->inventaire[game->gemme_selected];
         if (tower->gemme == NULL){
             if(PlaceGemmeInTower(tower, selectedGemme)){
                 if(game->gemme_selected <= 5){
                     game->inventaire[game->gemme_selected] = NULL;
-                }else if(game->gemme_selected == 6){
-                    game->fusion_slot1 = NULL;
-                }else if(game->gemme_selected == 7){
-                    game->fusion_slot2 = NULL;
                 }
                 game->gemme_selected = -1;
                 printf("Gemme placed on tower at (%d, %d).\n", gridPosition.x, gridPosition.y);
             }
-            
-            
         }
-        else
-        {
+        else{
             printf("Tower already has a gemme.\n");
         }
     }
@@ -489,5 +482,22 @@ void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y)
     else
     {
         printf("No tower at the clicked position.\n");
+    }
+}
+void try_remove_gemme_on_tower(Game * game, int mouse_x,int mouse_y){
+    Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
+    Tower *tower;
+    if(tower = find_Tower_Pos(game, gridPosition)){
+        if(game->inventory_size <= 5){
+            for(int i = 0 ; i < 6 ; i++){
+                if(game->inventaire[i] == NULL){
+                    game->inventaire[i] = tower->gemme;
+                    RemoveGemmeFromTower(tower);
+                    return;
+                }
+            }
+            
+        }
+        
     }
 }

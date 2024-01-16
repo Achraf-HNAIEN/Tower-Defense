@@ -66,10 +66,11 @@ int main() {
     int mouse_x, mouse_y;
     MLV_Button_state state;
     MLV_Keyboard_button key;
+    MLV_Mouse_button mouse_button;
     event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y,
-                          NULL, &state);
+                          &mouse_button, &state);
 
-    if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED) {
+    if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED && mouse_button == MLV_BUTTON_LEFT) {
       printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
       if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92,
                           50)) {
@@ -103,7 +104,13 @@ int main() {
       }
       else if(game.gemme_selected != -1 && mouse_x <= WIDTH*CELL_SIZE){
         try_place_gemme_on_tower(&game, mouse_x, mouse_y);
-        }
+      }
+      
+    }
+    else if ( event == MLV_MOUSE_BUTTON && state == MLV_RELEASED && mouse_button == MLV_BUTTON_RIGHT ){
+      if( mouse_x <= WIDTH*CELL_SIZE){
+        try_remove_gemme_on_tower(&game, mouse_x, mouse_y);
+      }
     }
     // Check for new wave trigger
     else if (game.has_start &&
