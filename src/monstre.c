@@ -42,7 +42,6 @@ Monster * initialize_Monster(int waveNumber, Point path[], int pathSize) {
     }else{
         monsters = (Monster *) malloc(sizeof(Monster) * 12);
     }
-
     int count = 0;
     float baseHP = 100.0f;
 

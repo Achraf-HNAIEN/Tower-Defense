@@ -32,7 +32,7 @@ static void draw_start_and_finish(Point start, Point finish) {
     draw_cell(finish.x, finish.y, MLV_COLOR_RED);
 }
 
-MLV_Color hueToRGB(int hue) {
+static MLV_Color hueToRGB(int hue) {
     float r = 0.0, g = 0.0, b = 0.0;
 
     int i = hue / 60;
@@ -102,21 +102,39 @@ static void draw_shop(Game * game){
     
 }
 
-static void draw_fusion_and_inventory(Game * game){
+static void draw_fusion(Game * game){
     int sizeFusion;
-    MLV_get_size_of_text("Fusion :",&sizeFusion, NULL);
-    MLV_draw_text(WIDTH * CELL_SIZE + 100 - sizeFusion/2, 220, "Fusion :", MLV_COLOR_PURPLE2);
-
-    MLV_draw_rectangle(WIDTH * CELL_SIZE + 35,
-           245,
-           50,50,MLV_COLOR_PURPLE1 );
-
-    MLV_draw_rectangle(WIDTH * CELL_SIZE + 115,
-           245,
-            50,50,MLV_COLOR_PURPLE1 );
-
+    MLV_get_size_of_text("Fusion : (100 mana)",&sizeFusion, NULL);
+    MLV_draw_text(WIDTH * CELL_SIZE + 100 - sizeFusion/2, 220, "Fusion : (100 mana)", MLV_COLOR_PURPLE2);
+    /*FUSION SLOT 1*/
+    if(game->gemme_selected == 6){
+        MLV_draw_filled_rectangle(WIDTH * CELL_SIZE + 35,245,50,50,MLV_rgba(30,255,30,120));
+   }
+    MLV_draw_rectangle(WIDTH * CELL_SIZE + 35,245,50,50,MLV_COLOR_PURPLE1 );
+    if(game->fusion_slot1){
+        MLV_draw_filled_circle(WIDTH * CELL_SIZE + 60, 270, 15, hueToRGB(game->fusion_slot1->teinte));
+        MLV_draw_text(WIDTH * CELL_SIZE + 57, 264,"%d",MLV_COLOR_BLACK, game->fusion_slot1->niveau);
+    }
+    
+   
+   /*FUSION SLOT 2*/
+   
+   if(game->gemme_selected == 7){
+        MLV_draw_filled_rectangle(WIDTH * CELL_SIZE + 115,245,50,50,MLV_rgba(30,255,30,120));
+   }
+    MLV_draw_rectangle(WIDTH * CELL_SIZE + 115,245,50,50,MLV_COLOR_PURPLE1 );
+    if(game->fusion_slot2){
+        MLV_draw_filled_circle(WIDTH * CELL_SIZE + 140, 270, 15, hueToRGB(game->fusion_slot2->teinte));
+        MLV_draw_text(WIDTH * CELL_SIZE + 137, 264,"%d",MLV_COLOR_BLACK, game->fusion_slot2->niveau);
+    }
+    
      MLV_draw_text(WIDTH * CELL_SIZE + 95, 260, "+", MLV_COLOR_PURPLE2);
+}
 
+
+static void draw_inventory(Game * game){
+    
+    /*INVENTORY*/
     for(int i = 0 ; i < 2 ; i++){
         for(int j = 0 ; j < 3 ; j++){
             
@@ -129,9 +147,9 @@ static void draw_fusion_and_inventory(Game * game){
                     315 + (j*80),
                     50,50,MLV_COLOR_LIGHTGRAY );
             
-            if( game->inventory_size > i + j*2 ){
-                MLV_draw_filled_circle(WIDTH * CELL_SIZE + 50 + (i * 100 ), 340 + (j*80), 15, hueToRGB(game->inventaire[i + j*2].teinte));
-                MLV_draw_text(WIDTH * CELL_SIZE + 50 + (i * 100 ) -3, 340 + (j*80)-6,"%d",MLV_COLOR_BLACK, game->inventaire[i + j*2].niveau);
+            if( game->inventaire[i + j*2] ){
+                MLV_draw_filled_circle(WIDTH * CELL_SIZE + 50 + (i * 100 ), 340 + (j*80), 15, hueToRGB(game->inventaire[i + j*2]->teinte));
+                MLV_draw_text(WIDTH * CELL_SIZE + 50 + (i * 100 ) -3, 340 + (j*80)-6,"%d",MLV_COLOR_BLACK, game->inventaire[i + j*2]->niveau);
             }
         }
     }
@@ -163,7 +181,8 @@ static void draw_side_information(Game * game){
     
     draw_wave_numberMana(game);
     draw_shop(game);
-    draw_fusion_and_inventory(game);
+    draw_fusion(game);
+    draw_inventory(game);
     return ;
 }
 
@@ -171,42 +190,36 @@ int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int heigh
     return mouse_x >= x && mouse_x < x + width && mouse_y >= y && mouse_y < y + height;
 }
 
-void drawTower(const Tower *tower) {
+static void drawTower(const Tower *tower) {
     if (tower == NULL) {
         fprintf(stderr, "Error: Null tower pointer in drawTower function\n");
         return;
     }
-    
-    int centerX = tower->position.x * CELL_SIZE + CELL_SIZE / 2;
-    int centerY = tower->position.y * CELL_SIZE + CELL_SIZE / 2;
-    int towerSize = CELL_SIZE / 2; 
 
     MLV_Color towerColor = MLV_COLOR_BLACK;
-    if (tower->gemme != NULL) {
-        switch (tower->gemme->elementType) {
-            case PYRO:
-                towerColor = MLV_COLOR_RED;
-                break;
-            case DENDRO:
-                towerColor = MLV_COLOR_GREEN;
-                break;
-            case HYDRO:
-                towerColor = MLV_COLOR_BLUE;
-                break;
-            default:
-                towerColor = MLV_COLOR_GREY;
-        }
-    }
     
+    int leftX = tower->position.x * CELL_SIZE;
+    int topY = tower->position.y * CELL_SIZE;
+
+    MLV_draw_filled_rectangle(leftX, topY, CELL_SIZE, CELL_SIZE, towerColor);
+    MLV_draw_rectangle(leftX, topY, CELL_SIZE, CELL_SIZE, MLV_COLOR_WHITE);
     
-    MLV_draw_filled_circle(centerX, centerY, towerSize, towerColor);
-    
-    
-    MLV_draw_circle(centerX, centerY, towerSize, MLV_COLOR_WHITE);
-    //printf("Drawing tower at: x=%d, y=%d, size=%d\n", centerX, centerY, towerSize);
+
+
+    if (tower->gemme != NULL){
+        MLV_Color GemmmeColor = hueToRGB(tower->gemme->teinte);
+        int centerX = tower->position.x * CELL_SIZE + CELL_SIZE / 2;
+        int centerY = tower->position.y * CELL_SIZE + CELL_SIZE / 2;
+        int towerSize = CELL_SIZE / 2; 
+        int range = GEMME_RANGE * CELL_SIZE;
+        MLV_draw_filled_circle(centerX, centerY, towerSize, GemmmeColor);
+        MLV_draw_circle(centerX, centerY, range, MLV_COLOR_LIGHT_GREEN);
+        MLV_draw_text(centerX-2, centerY-5,"%d",MLV_COLOR_BLACK, tower->gemme->niveau);
+}
 }
 
-void drawManaBar(Game *game) {
+
+static void drawManaBar(Game *game) {
     int manaBarWidth = 400; 
     int manaBarHeight = 25; 
     int manaBarX = (((WIDTH*CELL_SIZE)/2) - (manaBarWidth/2));
@@ -231,24 +244,8 @@ void drawManaBar(Game *game) {
 
 }
 
-// void drawAll(Game * game, Monster * Monsters, int count){
-//     MLV_clear_window(MLV_COLOR_BLACK);
-//     draw_side_information(game);
 
-//     draw_grid_with_path(game->grid, game->path, game->pathSize);
-//     drawMonsters(Monsters, count);
-//     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
-//     for (int i = 0; i < game->tower_count; i++) {
-//         drawTower(&(game->towers[i]));
-//     }
-    
-//     for (int i = 0; i < count; i++) {
-//         drawMonsterHealthBar(&Monsters[i], game->pathSize);
-//     }
-//     drawManaBar(game);
-// }
-
-void draw_next_wave_time(Game * game){
+static void draw_next_wave_time(Game * game){
     int len_x, len_y;
     if (game->has_start){
         MLV_get_size_of_adapted_text_box(" Temps avant la prochaine vague : %d ",2, &len_x, &len_y, game->next_wave_time);
@@ -293,3 +290,4 @@ void drawAll(Game *game, Wave *headWave) {
     drawManaBar(game);
     draw_next_wave_time(game);
 }
+

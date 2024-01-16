@@ -31,7 +31,7 @@ typedef struct {
 
 
 
-Gemme createGem(int niveau);
+Gemme * createGem(int niveau);
 
 Gemme new_gemme_pure(int level);
 

@@ -3,10 +3,10 @@
 #include <math.h>
 #include <stdio.h>
 
-Gemme createGem(int niveau)
-{
-    Gemme newGem;
-    int teinte;
+Gemme * createGem(int niveau){
+    Gemme *newGem = (Gemme *) malloc(sizeof(Gemme));
+    if(!newGem) {fprintf(stderr, "Fail to allocate memory.\n"); return newGem;}
+    int teinte =-1;
     int randomType = rand() % 3;
     switch (randomType)
     {
@@ -14,22 +14,22 @@ Gemme createGem(int niveau)
         // red
         teinte = (rand() % 60) + 330;
         teinte %= 360;
-        newGem.elementType = PYRO;
+        newGem->elementType = PYRO;
         break;
     case 1: // Green
         teinte = (rand() % 60) + 90;
-        newGem.elementType = DENDRO;
+        newGem->elementType = DENDRO;
         break;
     case 2: // Blue
         teinte = (rand() % 60) + 210;
-        newGem.elementType = HYDRO;
+        newGem->elementType = HYDRO;
         break;
     }
 
-    newGem.type = PURE;
-    newGem.niveau = niveau;
-    newGem.teinte = teinte;
-    newGem.cooldown = 1.0f / (2 * niveau);
+    newGem->type = PURE;
+    newGem->niveau = niveau;
+    newGem->teinte = teinte;
+    newGem->cooldown = 1.0f / (2 * niveau);
 
     return newGem;
 }
@@ -60,7 +60,7 @@ float calculateGemDamage(const Gemme *gem, const Monster *target)
 
 void applyElementalEffect(Gemme *gem, Monster *target) {
     if (gem == NULL || target == NULL) {
-        return; // Safety check
+        return;
     }
     
     switch (gem->elementType) {
@@ -83,9 +83,7 @@ void applyElementalEffect(Gemme *gem, Monster *target) {
 
 int fuseGems(const Gemme *gem1, const Gemme *gem2, Gemme *fusedGem)
 {
-    if (gem1 == NULL || gem2 == NULL || gem1->niveau != gem2->niveau)
-    {
-        fprintf(stderr, "Error: cannot fuse gems\n");
+    if (gem1 == NULL || gem2 == NULL || gem1->niveau != gem2->niveau){
         return 1;
     }
     if (fusedGem == NULL)
@@ -116,8 +114,4 @@ void destroyGem(Gemme *gem)
     }
     free(gem);
 }
-
-
-
-    
 

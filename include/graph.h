@@ -15,11 +15,6 @@
 #define HEALTH_BAR_HEIGHT 3
 
 
-//void draw_cell(int x, int y, MLV_Color color);
-//void draw_grid_with_path(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
-//void draw_start_and_finish(Point start, Point finish);
-//void drawMonsters(Monster monsters[], int count);
 int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height);
 void drawAll(Game *game, Wave *headWave);
-//void draw_side_information(Game *);
 #endif

@@ -119,10 +119,20 @@ void add_mana(Game *game, int mana)
 
 void buy_gemme(Game *game)
 {
+
     if (game->inventory_size < 6 && 100 * pow(2, game->level_gemme_in_shop) <= game->mana)
     {
         game->mana -= 100 * pow(2, game->level_gemme_in_shop);
-        game->inventaire[game->inventory_size++] = createGem(game->level_gemme_in_shop);
+        createGem(game->level_gemme_in_shop);
+        for(int i = 0 ; i < 6 ; i++){
+            if(game->inventaire[i] == NULL ){
+                game->inventaire[i] = createGem(game->level_gemme_in_shop);
+                game->inventory_size++;
+                break;
+            }
+                
+        }
+        
     }
 }
 
@@ -156,72 +166,163 @@ Wave *initializeWave(int waveNumber, Point path[], int pathSize)
     return newWave;
 }
 
-void handle_inventory_click(int m_x, int m_y, Game *game)
-{
-    if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315, 50, 50))
-    { // CASE INVENTAIRE 1
-        if (game->inventory_size - 1 >= 0 && game->gemme_selected != 0)
-        {
+void handle_inventory_click(int m_x, int m_y, Game *game){
+    if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315, 50, 50)){ // CASE INVENTAIRE 1
+        if (game->inventaire[0] && game->gemme_selected != 0){
             game->gemme_selected = 0;
         }
-        else
-        {
+        else if (game->inventaire[0] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[0] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[0] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
         }
     }
-    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315, 50, 50))
-    { // CASE INVENTAIRE 2
-        if (game->inventory_size - 1 >= 1 && game->gemme_selected != 1)
-        {
+    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315, 50, 50)){ // CASE INVENTAIRE 2
+        if (game->inventaire[1] && game->gemme_selected != 1){
             game->gemme_selected = 1;
         }
-        else
-        {
+        else if (game->inventaire[1] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[1] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[1] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
         }
     }
-    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 80, 50, 50))
-    { // CASE INVENTAIRE 3
-        if (game->inventory_size - 1 >= 2 && game->gemme_selected != 2)
-        {
+    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 80, 50, 50)){ // CASE INVENTAIRE 3
+        if (game->inventaire[2] && game->gemme_selected != 2){
             game->gemme_selected = 2;
         }
-        else
-        {
+        else if (game->inventaire[2] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[2] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[2] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
         }
     }
-    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 80, 50, 50))
-    { // CASE INVENTAIRE 4
-        if (game->inventory_size - 1 >= 3 && game->gemme_selected != 3)
-        {
+    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 80, 50, 50)){ // CASE INVENTAIRE 4
+        if (game->inventaire[3] && game->gemme_selected != 3){
             game->gemme_selected = 3;
         }
-        else
-        {
+        else if (game->inventaire[3] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[3] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[3] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
         }
     }
-    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 160, 50, 50))
-    { // CASE INVENTAIRE 5
-        if (game->inventory_size - 1 >= 4 && game->gemme_selected != 4)
-        {
+    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25, 315 + 160, 50, 50)){ // CASE INVENTAIRE 5
+        if (game->inventaire[4] && game->gemme_selected != 4){
             game->gemme_selected = 4;
         }
-        else
-        {
+        else if (game->inventaire[4] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[4] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[4] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
         }
     }
-    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 160, 50, 50))
-    { // CASE INVENTAIRE 6
-        if (game->inventory_size - 1 >= 4 && game->gemme_selected != 4)
-        {
-            game->gemme_selected = 4;
+    else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 25 + 100, 315 + 160, 50, 50)){ // CASE INVENTAIRE 6
+        if (game->inventaire[5]&& game->gemme_selected != 5){
+            game->gemme_selected = 5;
         }
-        else
-        {
+        else if (game->inventaire[5] == NULL){
+            if( game->gemme_selected == 6 ){
+                game->inventaire[5] = game->fusion_slot1;
+                game->fusion_slot1 = NULL;
+            } 
+            if( game->gemme_selected == 7){
+                game->inventaire[5] = game->fusion_slot2;
+                game->fusion_slot2 = NULL;
+            }
             game->gemme_selected = -1;
+        }
+    }else if (is_click_inside(m_x, m_y, WIDTH * CELL_SIZE + 35, 245, 50, 50)){
+        if(game->gemme_selected <= 5 && game->gemme_selected >=0){
+            if(game->fusion_slot1){
+                Gemme * gemme_temp = game->fusion_slot1;
+                game->fusion_slot1 = game->inventaire[game->gemme_selected];
+                game->inventaire[game->gemme_selected] = gemme_temp;
+                game->gemme_selected = -1;
+            }else{
+                game->fusion_slot1 = game->inventaire[game->gemme_selected];
+                game->inventaire[game->gemme_selected] = NULL;
+                game->inventory_size--;
+                game->gemme_selected = -1;
+            }
+        }else if(game->fusion_slot1){
+            game->gemme_selected = 6;
+        }else {
+            game->gemme_selected = -1;
+        }
+    }else if(is_click_inside(m_x,m_y,WIDTH * CELL_SIZE + 115, 245, 50, 50) ){
+        if(game->gemme_selected <= 5 && game->gemme_selected >=0){
+            if(game->fusion_slot2){
+                Gemme * gemme_temp = game->fusion_slot2;
+                game->fusion_slot2 = game->inventaire[game->gemme_selected];
+                game->inventaire[game->gemme_selected] = gemme_temp;
+                game->gemme_selected = -1;
+            }else{
+                game->fusion_slot2 = game->inventaire[game->gemme_selected];
+                game->inventaire[game->gemme_selected] = NULL;
+                game->inventory_size--;
+                game->gemme_selected = -1;
+            }
+        }else if(game->fusion_slot2){
+            game->gemme_selected = 7;
+        }else {
+            game->gemme_selected = -1;
+        }
+    }
+    
+}
+
+void try_fusion(Game * game){
+    if(game->mana >= 100){
+        Gemme * gemme_fusion = (Gemme *) malloc(sizeof(Gemme));
+        if(!gemme_fusion) return ;
+        if(!fuseGems(game->fusion_slot1, game->fusion_slot2, gemme_fusion)){
+            game->mana -= 100;
+            for(int i = 0 ; i<6 ; i++){
+                if (game->inventaire[i] == NULL ){
+                    game->inventaire[i] = gemme_fusion;
+                    game->inventory_size++;
+                    free(game->fusion_slot1);
+                    free(game->fusion_slot2);
+                    game->fusion_slot1 = NULL;
+                    game->fusion_slot2 = NULL;
+                    return;
+                }
+            }
+            free(game->fusion_slot1);
+            game->fusion_slot1 = gemme_fusion;
+            free(game->fusion_slot2);
+            game->fusion_slot2 = NULL;
         }
     }
 }
@@ -242,6 +343,7 @@ static MLV_Color determineProjectileColor(Gemme *gemme) {
             return MLV_COLOR_WHITE; // Default color for other types
     }
 }
+
 void addVisualProjectile(Game *game, VisualProjectile vp) {
     if (game == NULL || game->numVisualProjectiles >= MAX_PROJECTILES) {
         return; // Ignore if the game is NULL or if the array is full
@@ -326,19 +428,66 @@ void UpdateGemmesAndShoot(Game *game, float deltaTime)
     }
 }
 
+Tower * find_Tower_Pos(Game * game, Point position){
+    if (!game) return NULL;
+    for(int i = 0;i < game->tower_count;i++){
+        if(game->towers[i].position.x == position.x && game->towers[i].position.y == position.y){
+            return &game->towers[i];// tower was found 
+        }
+    }
+    return NULL; // no Tower in that pos 
+}
 
+void placeGemmeOnTower(Game *game, Point towerPosition) {
+    if (game->gemme_selected != -1) {
+        Tower *tower = find_Tower_Pos(game, towerPosition);
+        if (tower != NULL) {
+            Gemme *selectedGemme = game->inventaire[game->gemme_selected];
+            PlaceGemmeInTower(tower, selectedGemme);
+            game->gemme_selected = -1;
+        }
+    }
+}
 
-// void shootAtMonster(Game *game, Monster *targetMonster, Gemme *gemme) {
-//     if (game == NULL || targetMonster == NULL || gemme == NULL) {
-//         printf("Error ------> shooting function have a NULL parameter to check\n");
-//         return;
-//     }
+void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y)
+{
+    if (game == NULL)
+    {
+        fprintf(stderr, "Error ----> Game is NULL in Try place gemme on tower function\n");
+        return;
+    }
 
-//     float damage = calculateGemDamage(gemme, targetMonster);
-
-//     applay_Damage(targetMonster, damage);
-
-//     applyElementalEffect(gemme, targetMonster);
-
-//     printf("Shot at monster with %f damage.\n", damage);
-// }
+    Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
+    Tower *tower = find_Tower_Pos(game, gridPosition);
+    if (game->gemme_selected != -1 && tower != NULL)
+    {
+        Gemme *selectedGemme = game->inventaire[game->gemme_selected];
+        if (tower->gemme == NULL){
+            if(PlaceGemmeInTower(tower, selectedGemme)){
+                if(game->gemme_selected <= 5){
+                    game->inventaire[game->gemme_selected] = NULL;
+                }else if(game->gemme_selected == 6){
+                    game->fusion_slot1 = NULL;
+                }else if(game->gemme_selected == 7){
+                    game->fusion_slot2 = NULL;
+                }
+                game->gemme_selected = -1;
+                printf("Gemme placed on tower at (%d, %d).\n", gridPosition.x, gridPosition.y);
+            }
+            
+            
+        }
+        else
+        {
+            printf("Tower already has a gemme.\n");
+        }
+    }
+    else if (game->gemme_selected == -1)
+    {
+        printf("No gemme selected to place on tower.\n");
+    }
+    else
+    {
+        printf("No tower at the clicked position.\n");
+    }
+}

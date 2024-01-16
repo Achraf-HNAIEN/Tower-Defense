@@ -10,12 +10,12 @@ int isWithinBounds(int x, int y) {
 }
 
 
-int manhattanDistance(int x1, int y1, int x2, int y2) {
+static int manhattan_Distance(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) + abs(y1 - y2);
 }
 
 
-int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSize) {
+static int too_Close_To_Path(int x, int y, int startX, int startY, Point *path, int pathSize) {
     for (int i = 0; i < pathSize; i++) {
         int pathX = path[i].x;
         int pathY = path[i].y;
@@ -23,7 +23,7 @@ int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSi
         if ((pathX == x && pathY == y) || (pathX == startX && pathY == startY)) {
             continue;
         }
-        if (manhattanDistance(x, y, pathX, pathY) <= 1) {
+        if (manhattan_Distance(x, y, pathX, pathY) <= 1) {
             return 1;  
         }
 
@@ -31,30 +31,30 @@ int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSi
     return 0;  
 }
 
-void printGrid(int grid[HEIGHT][WIDTH]) {
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            printf("%d ", grid[y][x]);
-        }
-        printf("\n");
-    }
-}
+// static void print_Grid(int grid[HEIGHT][WIDTH]) {
+//     for (int y = 0; y < HEIGHT; y++) {
+//         for (int x = 0; x < WIDTH; x++) {
+//             printf("%d ", grid[y][x]);
+//         }
+//         printf("\n");
+//     }
+// }
 
-void initializeGrid(int grid[HEIGHT][WIDTH]) {
+static void initialize_Grid(int grid[HEIGHT][WIDTH]) {
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             grid[y][x] = EMPTY;
         }
     }
 }
-void chooseStartingPoint(int *x, int *y) {
+static void choose_Starting_Point(int *x, int *y) {
     *x = rand() % (WIDTH - 6) + 3;  
     *y = rand() % (HEIGHT - 6) + 3; 
     printf("Starting Point Chosen: (%d, %d)\n", *x, *y); // Debug
 }
 
 
-int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize) {
+static int calculate_Extend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize) {
     int extend = 0;
     int dx = 0, dy = 0;
 
@@ -69,7 +69,7 @@ int calculateExtend(int x, int y, int direction, int startX, int startY, Point *
         int newX = x + dx * extend;
         int newY = y + dy * extend;
 
-        if (!isWithinBounds(newX, newY) || tooCloseToPath(newX, newY, startX, startY, path, pathSize)) {
+        if (!isWithinBounds(newX, newY) || too_Close_To_Path(newX, newY, startX, startY, path, pathSize)) {
             return extend - 2;
         }
         if (newX < 2 || newX >= WIDTH - 2 || newY < 2 || newY >= HEIGHT - 2) {
@@ -80,7 +80,7 @@ int calculateExtend(int x, int y, int direction, int startX, int startY, Point *
 }
 
 
-void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize) {
+static void add_Path_Segment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize) {
     int dx = 0, dy = 0;
 
     switch(direction) {
@@ -109,8 +109,8 @@ void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][W
 }
 
 
-// Adjust chooseSteps to follow the '3/4' probability logic
-int chooseSteps(int extend) {
+// Adjust choose_Steps to follow the '3/4' probability logic
+static int choose_Steps(int extend) {
     int steps = 0;
     for (int i = 0; i < extend; i++) {
         if ((rand() % 4) < 3) {
@@ -120,47 +120,13 @@ int chooseSteps(int extend) {
     return MAX(steps, 3);
 }
 
-int validatePath(int grid[HEIGHT][WIDTH], Point *path, int pathSize) {
-    // Check for minimum path length
-    if (pathSize < MIN_LENGTH) {
-        return 0;
-    }
-
-    // Check for minimum turns
-    int turns = 0;
-    for (int i = 2; i < pathSize; i++) {
-        int dx1 = path[i - 1].x - path[i - 2].x;
-        int dy1 = path[i - 1].y - path[i - 2].y;
-        int dx2 = path[i].x - path[i - 1].x;
-        int dy2 = path[i].y - path[i - 1].y;
-
-        // Check if there's a change in direction
-        if (dx1 != dx2 || dy1 != dy2) {
-            turns++;
-        }
-    }
-    if (turns < MIN_TURNS) {
-        return 0;
-    }
-
-    // Check for minimum distance between path segments
-    for (int i = 0; i < pathSize; i++) {
-        for (int j = i + 2; j < pathSize; j++) {  // Start from i + 2 to avoid immediate adjacent points
-            if (manhattanDistance(path[i].x, path[i].y, path[j].x, path[j].y) < 3) {
-                return 0;
-            }
-        }
-    }
-
-    return 1;  // Path is valid
-}
-int chooseNewDirection(int x, int y, int currentDirection, Point *path, int pathSize) {
+static int choose_New_Direction(int x, int y, int currentDirection, Point *path, int pathSize) {
     int leftDirection = (currentDirection + 3) % 4;  // Turn left
     int rightDirection = (currentDirection + 1) % 4; // Turn right
 
-    int leftExtend = calculateExtend(x, y, leftDirection, x, y, path, pathSize);
-    int rightExtend = calculateExtend(x, y, rightDirection, x, y, path, pathSize);
-    int currentExtend = calculateExtend(x, y, currentDirection, x, y, path, pathSize);
+    int leftExtend = calculate_Extend(x, y, leftDirection, x, y, path, pathSize);
+    int rightExtend = calculate_Extend(x, y, rightDirection, x, y, path, pathSize);
+    int currentExtend = calculate_Extend(x, y, currentDirection, x, y, path, pathSize);
 
     // Calculate total extend for probability calculation
     int totalExtend = leftExtend + rightExtend + currentExtend;
@@ -179,6 +145,7 @@ int chooseNewDirection(int x, int y, int currentDirection, Point *path, int path
         return currentDirection;
     }
 }
+
 float distanceBetweenPoints(Point p1, Point p2) {
     return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
@@ -188,9 +155,9 @@ void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
     int attempts = 0;
 
     while (attempts++ < MAX_ATTEMPTS) {
-        initializeGrid(grid);
+        initialize_Grid(grid);
         int x, y, length = 0, turns = 0;
-        chooseStartingPoint(&x, &y);
+        choose_Starting_Point(&x, &y);
         
         // Other variables for path generation
         int currentDirection = -1;
@@ -199,10 +166,10 @@ void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
         int steps = 0;
         
         while (1) {
-            extend = calculateExtend(x, y, currentDirection, x, y, *path, *pathSize);
+            extend = calculate_Extend(x, y, currentDirection, x, y, *path, *pathSize);
             if (extend > 2) {
-                steps = chooseSteps(extend);
-                addPathSegment(&x, &y, currentDirection, steps, grid, &length, path, pathSize);
+                steps = choose_Steps(extend);
+                add_Path_Segment(&x, &y, currentDirection, steps, grid, &length, path, pathSize);
                 
                 // Count turns
                 if (lastDirection != -1 && lastDirection != currentDirection) {
@@ -211,7 +178,7 @@ void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
                 lastDirection = currentDirection;
 
                 // Calculate new direction
-                currentDirection = chooseNewDirection(x, y, currentDirection, *path, *pathSize);
+                currentDirection = choose_New_Direction(x, y, currentDirection, *path, *pathSize);
             } else {
                 break;
             }

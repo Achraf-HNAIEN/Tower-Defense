@@ -8,7 +8,7 @@
 #include "projectile.h"
 
 #define CELL_SIZE 25 
-
+#define GEMME_RANGE 3
 typedef struct _Wave{
     Monster *monsters;
     int Nb_Monsters;
@@ -33,13 +33,15 @@ typedef struct{
   Wave *waves;
   Wave *wavesHead;
   int wave_count;
-  Gemme inventaire[6];
+  Gemme * inventaire[6];
   short inventory_size;
   short has_start;
   int next_wave_time;
-  short gemme_selected;
+  short gemme_selected; //-1 mean no gemme selected, [0-5] inventory index / 6 mean slot fusion 1 / 7 mean slot fusion 2
   VisualProjectile visualProjectiles[MAX_PROJECTILES];
   short numVisualProjectiles;
+  Gemme * fusion_slot1; // NULL mean no gemme in fusion slot 1
+  Gemme * fusion_slot2; // NULL mean no gemme in fusion slot 2
   }Game;
 
 
@@ -60,6 +62,7 @@ void add_mana(Game * game, int mana);
 /*Try to upgrade mana storage of the player*/
 void upgrade_mana_storage(Game *);
 void addVisualProjectile(Game *game, VisualProjectile vp);
-
+void try_fusion(Game * game);
+void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y);
 
 #endif

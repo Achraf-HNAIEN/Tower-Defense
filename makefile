@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -g
+CFLAGS := -Wall -g -pedantic -O1
 LIBS := -lm -lMLV
 SRCDIR := src
 INCDIR := include
