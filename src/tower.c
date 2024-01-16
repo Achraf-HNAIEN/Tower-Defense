@@ -33,11 +33,17 @@ void PlaceGemmeInTower(Tower *tower, Gemme *gemme) {
     }
 
     if (tower->gemme != NULL) {
-        printf("Warning ------> \n");
+        printf("Warning ------> there is all ready a gemme on this tower \n");
 
     }
 
     tower->gemme = gemme;
+    if (tower->gemme != NULL) {
+        tower->gemme->chargeTime = GEMME_CHARGE_TIME;
+        tower->gemme->isReadyToShoot = 0;
+    }
+
+    printf("Gem placed in tower. It will be ready to shoot after %f seconds.\n", GEMME_CHARGE_TIME);
 }
 
 void RemoveGemmeFromTower(Tower *tower) {

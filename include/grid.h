@@ -31,6 +31,7 @@ void printGrid(int grid[HEIGHT][WIDTH]);
 void initializeGrid(int grid[HEIGHT][WIDTH]);
 void chooseStartingPoint(int *x, int *y);
 int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize);
+float distanceBetweenPoints(Point p1, Point p2);
 void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
 int validatePath(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
 int chooseNewDirection(int x, int y, int currentDirection, Point *path, int pathSize);

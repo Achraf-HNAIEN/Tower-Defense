@@ -108,23 +108,6 @@ int fuseGems(const Gemme *gem1, const Gemme *gem2, Gemme *fusedGem)
     return 0;
 }
 
-// ElementType determineElementType(int teinte)
-// {
-//     if ((teinte >= 0 && teinte <= 30) || (teinte >= 330 && teinte <= 359))
-//     {
-//         return PYRO;
-//     }
-//     else if (teinte >= 90 && teinte <= 150)
-//     {
-//         return DENDRO;
-//     }
-//     else if (teinte >= 210 && teinte <= 270)
-//     {
-//         return HYDRO;
-//     }
-//     return NONE;
-// }
-
 void destroyGem(Gemme *gem)
 {
     if (gem == NULL)
@@ -133,4 +116,8 @@ void destroyGem(Gemme *gem)
     }
     free(gem);
 }
+
+
+
+    
 

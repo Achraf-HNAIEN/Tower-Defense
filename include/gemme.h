@@ -1,9 +1,11 @@
 #ifndef GEMME_H
 #define GEMME_H
 #include "monstre.h"
+#include <MLV/MLV_all.h>
 
 
 #define M_PI 3.14159265358979323846
+#define GEMME_CHARGE_TIME 2.0 // Seconde
 
 typedef enum {
     PURE,
@@ -22,8 +24,12 @@ typedef struct {
     int niveau;              
     int teinte;              
     ElementType elementType; 
-    float cooldown;          
+    float cooldown;
+    float chargeTime;        
+    int isReadyToShoot;         
 } Gemme;
+
+
 
 Gemme createGem(int niveau);
 

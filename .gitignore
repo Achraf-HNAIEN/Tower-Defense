@@ -6,3 +6,4 @@ obj/monstre.o
 obj/main.o
 obj/gemme.o
 obj/tower.o
+src/text.txt

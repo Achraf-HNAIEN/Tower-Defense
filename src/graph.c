@@ -278,12 +278,18 @@ void drawAll(Game *game, Wave *headWave) {
         }
         currentWave = currentWave->next;
     }
+    for (int i = 0; i < game->numVisualProjectiles; i++) {
+        VisualProjectile *vp = &game->visualProjectiles[i];
+        MLV_draw_line(vp->start.x, vp->start.y, vp->end.x, vp->end.y, vp->color);
+    }// draw visual projectiles
+
 
     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
     for (int i = 0; i < game->tower_count; i++) {
         drawTower(&(game->towers[i]));
     }
 
+    game->numVisualProjectiles = 0; // added to clear the visual projectiles
     drawManaBar(game);
     draw_next_wave_time(game);
 }

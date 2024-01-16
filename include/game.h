@@ -5,6 +5,7 @@
 #include "grid.h"
 #include "tower.h"
 #include "monstre.h"
+#include "projectile.h"
 
 #define CELL_SIZE 25 
 
@@ -37,6 +38,8 @@ typedef struct{
   short has_start;
   int next_wave_time;
   short gemme_selected;
+  VisualProjectile visualProjectiles[MAX_PROJECTILES];
+  short numVisualProjectiles;
   }Game;
 
 
@@ -56,6 +59,7 @@ void add_mana(Game * game, int mana);
 
 /*Try to upgrade mana storage of the player*/
 void upgrade_mana_storage(Game *);
+void addVisualProjectile(Game *game, VisualProjectile vp);
 
 
 #endif

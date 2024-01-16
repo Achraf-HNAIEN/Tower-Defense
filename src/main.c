@@ -29,8 +29,10 @@ int main() {
         .wavesHead = NULL,
         .inventory_size = 0,
         .has_start = 0,
-        .gemme_selected = -1 // -1 mean no gemme selected
+        .gemme_selected = -1, // -1 mean no gemme selected
+        .numVisualProjectiles = 0
     };
+    memset(game.visualProjectiles, 0, sizeof(game.visualProjectiles));
     Wave* headWave = NULL;  // Head of the waves linked list
     Wave* currentWave;      // Current wave pointer for iteration
 

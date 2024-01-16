@@ -179,6 +179,9 @@ int chooseNewDirection(int x, int y, int currentDirection, Point *path, int path
         return currentDirection;
     }
 }
+float distanceBetweenPoints(Point p1, Point p2) {
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+}
 
 void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
     srand(time(NULL));
