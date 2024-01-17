@@ -1,14 +1,34 @@
 #include <MLV/MLV_all.h>
 #include <time.h>
+#include <getopt.h>
 
 #include "game.h"
 #include "graph.h"
 #include "grid.h"
 #include "monstre.h"
 #include "tower.h"
+#include "message.h"
+
 // https://elearning.univ-eiffel.fr/pluginfile.php/477685/mod_resource/content/5/projet-tower-defense-compressed.pdf
 
-int main() {
+int main(int argc, char*argv[]) {
+  int opt;
+
+    static struct option long_options[] = {
+        {"help", no_argument, 0, 'h'},
+        {0, 0, 0, 0} // Marqueur de fin des options
+    };
+
+    while ((opt = getopt_long(argc, argv, "h", long_options, NULL)) != -1) {
+        switch (opt) {
+            case 'h':
+                print_help();
+                return 0;
+            default:
+                return 0; 
+        }
+    }
+
   srand(time(NULL));
   MLV_create_window("Tower Defense Grid", "TD Grid", WIDTH * CELL_SIZE + 200,
                     HEIGHT * CELL_SIZE);
@@ -69,8 +89,9 @@ int main() {
     MLV_Mouse_button mouse_button;
     event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &mouse_x, &mouse_y,
                           &mouse_button, &state);
-
+    MLV_flush_event_queue();
     if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED && mouse_button == MLV_BUTTON_LEFT) {
+
       printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
       if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92,
                           50)) {
@@ -171,17 +192,18 @@ int main() {
         drawAll(&game, headWave);
         currentWave = currentWave->next;
       }
+      check_wave_dead(&game);
     }
     if (game.want_to_place_tower && mouse_x >= 0 && mouse_y >= 0 &&
         mouse_x <= WIDTH * CELL_SIZE && mouse_y <= HEIGHT * CELL_SIZE) {
       MLV_draw_filled_circle(mouse_x, mouse_y, CELL_SIZE * 3,
                              MLV_rgba(0, 255, 0, 120));
     }
-
+     
     // Frame rate control
     int frameTime = MLV_get_time() - currentTime;
     if (frameTime < frameDelay) {
-        MLV_delay_according_to_frame_rate(frameDelay, frameTime);
+        MLV_delay_according_to_frame_rate(frameDelay, frameTime);   
     }
   }
 

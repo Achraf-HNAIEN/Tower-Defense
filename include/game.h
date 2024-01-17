@@ -65,4 +65,5 @@ void addVisualProjectile(Game *game, VisualProjectile vp);
 void try_fusion(Game * game);
 void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y);
 void try_remove_gemme_on_tower(Game *, int, int);
+void check_wave_dead(Game * game);
 #endif

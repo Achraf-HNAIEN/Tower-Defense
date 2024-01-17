@@ -7,7 +7,7 @@
 
 
 #define TOWER 2
-#define MAX_TOWERS 10
+#define MAX_TOWERS 30
 
 typedef struct {
     Point position;    
@@ -16,7 +16,7 @@ typedef struct {
 
 void InitializeTower(Tower *tower, Point position);
 
-int CanBuildTower(const int grid[HEIGHT][WIDTH], Point position);
+int CanBuildTower(int grid[HEIGHT][WIDTH], Point position);
 
 int PlaceGemmeInTower(Tower *tower, Gemme *gemme);
 

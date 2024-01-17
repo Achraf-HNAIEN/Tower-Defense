@@ -75,6 +75,32 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
     return count;
 }
 
+static int monster_all_dead(Wave * wave){
+    for(int i = 0 ; i < wave->Nb_Monsters ; i++){
+        if(wave->monsters[i].hp > 0) return 0; // if a monster is alive the wave is still alive
+    }
+    return 1;
+}
+
+
+void check_wave_dead(Game * game){
+    if(NULL == game->wavesHead){
+        return;
+    }
+    Wave * currentWave = game->wavesHead;
+    Wave * previousWave = NULL;
+    while (currentWave != NULL && !monster_all_dead(currentWave)) { 
+            previousWave = currentWave;
+            currentWave = currentWave->next;
+    }    
+    if (currentWave == game->wavesHead){
+        game->wavesHead = currentWave->next;
+    }else if (currentWave != NULL){
+        previousWave->next = currentWave->next;
+    }
+    free(currentWave);
+}
+
 void placeTower(Game *game, Point gridPosition, Gemme *gemme)
 {
     // Check if we can build a tower here and if the maximum number of towers hasn't been reached
@@ -487,7 +513,7 @@ void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y)
 void try_remove_gemme_on_tower(Game * game, int mouse_x,int mouse_y){
     Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
     Tower *tower;
-    if(tower = find_Tower_Pos(game, gridPosition)){
+    if((tower = find_Tower_Pos(game, gridPosition))){
         if(game->inventory_size <= 5){
             for(int i = 0 ; i < 6 ; i++){
                 if(game->inventaire[i] == NULL){
