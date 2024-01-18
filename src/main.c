@@ -66,7 +66,7 @@ int main(int argc, char*argv[]) {
 
   int previousTime = MLV_get_time();
   int last_wave_time = previousTime;
-  drawAll(&game, NULL);
+  drawAll(&game, NULL,0);
   while (!game.quit) {
     int currentTime = MLV_get_time();
     float deltaTime = (currentTime - previousTime) / 1000.0f;
@@ -76,10 +76,10 @@ int main(int argc, char*argv[]) {
     // Update and handle each wave
     currentWave = headWave;
     while (currentWave != NULL) {
-      moveMonsters(currentWave->monsters, game.path, game.pathSize, deltaTime,
-                   &game);
+      moveMonsters(currentWave->monsters, game.path, game.pathSize, deltaTime,&game);
       currentWave = currentWave->next;
     }
+    
 
     // Handle events
     MLV_Event event;
@@ -185,11 +185,19 @@ int main(int argc, char*argv[]) {
 
     // Draw everything
     currentWave = headWave;
+    game.wavesHead = headWave;
+    
     if (NULL == currentWave) {
-      drawAll(&game, NULL);
+      drawAll(&game, NULL,deltaTime);
     } else {
       while (currentWave != NULL) {
-        drawAll(&game, headWave);
+
+        drawAll(&game, headWave,deltaTime);
+        UpdateGemmesAndShoot(&game, deltaTime);
+        drawProjectiles(&game);
+        updateProjectilePosition(&game, deltaTime);
+        cleanupProjectiles(&game);
+
         currentWave = currentWave->next;
       }
       check_wave_dead(&game);
@@ -200,6 +208,7 @@ int main(int argc, char*argv[]) {
                              MLV_rgba(0, 255, 0, 120));
     }
      
+  
     // Frame rate control
     int frameTime = MLV_get_time() - currentTime;
     if (frameTime < frameDelay) {

@@ -14,9 +14,9 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
 
     for (int i = 0; i < count; i++)
     {
-        if (monsters[i].hp <= 0)
+        if (monsters[i].hp <= 0){
             continue;
-
+    }
         if (monsters[i].pathIndex < 0)
         {
             monsters[i].pathIndex += deltaTime;
@@ -106,7 +106,7 @@ void placeTower(Game *game, Point gridPosition, Gemme *gemme)
     // Check if we can build a tower here and if the maximum number of towers hasn't been reached
     if (!CanBuildTower(game->grid, gridPosition) || game->nb_tower >= MAX_TOWERS)
     {
-        printf("Cannot build tower here or maximum number of towers reached.\n");
+        //printf("Cannot build tower here or maximum number of towers reached.\n");
         return;
     }
 
@@ -116,7 +116,7 @@ void placeTower(Game *game, Point gridPosition, Gemme *gemme)
     // Check if we have enough mana to build the tower
     if (game->mana < towerCost)
     {
-        printf("Not enough mana to build a tower.\n");
+        //printf("Not enough mana to build a tower.\n");
         return;
     }
 
@@ -372,47 +372,50 @@ static MLV_Color determineProjectileColor(Gemme *gemme) {
 
 void addVisualProjectile(Game *game, VisualProjectile vp) {
     if (game == NULL || game->numVisualProjectiles >= MAX_PROJECTILES) {
-        return; // Ignore if the game is NULL or if the array is full
+        return;
     }
 
     game->visualProjectiles[game->numVisualProjectiles++] = vp;
 }
 
 void shootAtMonster(Game *game, Monster *targetMonster, Tower *tower) {
-    if (game == NULL || targetMonster == NULL || tower == NULL || tower->gemme == NULL) {
-        printf("Error ------> Shooting function has a NULL parameter.\n");
-        return;
-    }
+    float damage = calculateGemDamage(tower->gemme, targetMonster);
 
-    Gemme *gemme = tower->gemme;
-    float damage = calculateGemDamage(gemme, targetMonster);
     applay_Damage(targetMonster, damage);
-    applyElementalEffect(gemme, targetMonster);
+    applyElementalEffect(tower->gemme, targetMonster);
 
     VisualProjectile vp = {
-        .start = tower->position,
-        .end = {targetMonster->x, targetMonster->y},
-        .color = determineProjectileColor(gemme) 
+        .start_x = tower->position.x,
+        .start_y = tower->position.y,
+        .end_x = targetMonster->x,
+        .end_y = targetMonster->y,
+        .targetMonster = targetMonster,
+        .color = determineProjectileColor(tower->gemme),
+        .active = 1
     };
-    addVisualProjectile(game, vp); 
-
-    printf("Shot at monster with %f damage.\n", damage);
+    addVisualProjectile(game, vp);
 }
+
 
 static Monster* findStrongestMonsterWithinRange(Game *game, Point towerPos, float range) {
     Monster* targetMonster = NULL;
     float maxHP = 0;
 
     Wave *currentWave = game->wavesHead;
+    //fprintf(stderr, "Current wave: %x\n", (void*)currentWave);
     while (currentWave != NULL) {
         for (int i = 0; i < currentWave->Nb_Monsters; i++) {
             Monster *monster = &currentWave->monsters[i];
             float dist = distanceBetweenPoints(towerPos, (Point){monster->x, monster->y});
+            //printf("Checking monster %d: HP = %f, Position = (%f, %f), Distance = %f\n", i, monster->hp, monster->x, monster->y, dist);
 
             if (dist <= range && monster->hp > maxHP) {
                 maxHP = monster->hp;
                 targetMonster = monster;
             }
+        }
+        if (targetMonster != NULL) {
+            //printf("Strongest monster found with HP: %f at position (%f, %f)\n", targetMonster->hp, targetMonster->x, targetMonster->y);
         }
         currentWave = currentWave->next;
     }
@@ -420,39 +423,54 @@ static Monster* findStrongestMonsterWithinRange(Game *game, Point towerPos, floa
     return targetMonster;
 }
 
+
 void UpdateGemmesAndShoot(Game *game, float deltaTime)
 {
+
+
     for (int i = 0; i < game->tower_count; i++)
     {
         Tower *tower = &game->towers[i];
         if (tower->gemme != NULL)
         {
+            //printf("Tower %d has a gemme. Cooldown before decrement: %f\n", i, tower->gemme->cooldown);
+
+            // Only decrement cooldown once per update cycle
             if (tower->gemme->cooldown > 0)
             {
                 tower->gemme->cooldown -= deltaTime;
+                //printf("Tower %d gemme cooldown after decrement: %f\n", i, tower->gemme->cooldown);
+
                 if (tower->gemme->cooldown <= 0)
                 {
                     tower->gemme->isReadyToShoot = 1;
-                    tower->gemme->cooldown = 0.5;
+                    tower->gemme->cooldown = 0.5; // Reset cooldown to half a second
                 }
             }
 
+            // If the gemme is ready to shoot, attempt to shoot
             if (tower->gemme->isReadyToShoot)
             {
-                tower->gemme->cooldown -= deltaTime;
-                if (tower->gemme->cooldown <= 0)
+                Monster *targetMonster = findStrongestMonsterWithinRange(game, tower->position, 3);
+                if (targetMonster != NULL)
                 {
-                    Monster * targetID = findStrongestMonsterWithinRange(game, tower->position, 3);
-                    if (targetID != NULL)
-                    {
-                        shootAtMonster(game, targetID, tower);
-                        tower->gemme->cooldown = 0.5;
-                    }
+                    shootAtMonster(game, targetMonster, tower);
+                    tower->gemme->isReadyToShoot = 0;
+                    tower->gemme->cooldown = 0.5; // Reset cooldown to half a second
+                }
+                else
+                {
                 }
             }
         }
+        else
+        {
+            //printf("Tower %d does not have a gemme.\n", i);
+        }
     }
 }
+
+
 
 Tower * find_Tower_Pos(Game * game, Point position){
     if (!game) return NULL;
@@ -498,16 +516,16 @@ void try_place_gemme_on_tower(Game *game, int mouse_x, int mouse_y)
             }
         }
         else{
-            printf("Tower already has a gemme.\n");
+            //printf("Tower already has a gemme.\n");
         }
     }
     else if (game->gemme_selected == -1)
     {
-        printf("No gemme selected to place on tower.\n");
+        //printf("No gemme selected to place on tower.\n");
     }
     else
     {
-        printf("No tower at the clicked position.\n");
+        //printf("No tower at the clicked position.\n");
     }
 }
 void try_remove_gemme_on_tower(Game * game, int mouse_x,int mouse_y){

@@ -158,6 +158,7 @@ static void drawMonsterHealthBar(Monster *monster, int pathsize) {
     if (monster == NULL || monster->pathIndex <=0 || monster->pathIndex >= pathsize - 1) {
         return;
     }
+    
 
     int pixelX = monster->x * CELL_SIZE;
     int pixelY = monster->y * CELL_SIZE;
@@ -172,7 +173,7 @@ static void drawMonsterHealthBar(Monster *monster, int pathsize) {
         healthColor = MLV_COLOR_RED;
     }
 
-    MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, MLV_COLOR_GREY);
+    MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT, MLV_COLOR_BLACK);
     MLV_draw_filled_rectangle(pixelX, pixelY - HEALTH_BAR_HEIGHT - 2, (int)(HEALTH_BAR_WIDTH * healthRatio), HEALTH_BAR_HEIGHT, healthColor);
 }
     
@@ -260,7 +261,72 @@ static void draw_next_wave_time(Game * game){
     }
 }
 
-void drawAll(Game *game, Wave *headWave) {
+void drawProjectiles(Game *game) {
+    //printf("Current Projectile Count: %d\n", game->numVisualProjectiles);
+    for (int i = 0; i < game->numVisualProjectiles; i++) {
+        if (game->visualProjectiles[i].active) {
+            MLV_draw_filled_circle(
+                game->visualProjectiles[i].start_x*CELL_SIZE+CELL_SIZE/2,
+                game->visualProjectiles[i].start_y*CELL_SIZE+CELL_SIZE/2,
+                PROJECTILE_SIZE,
+                game->visualProjectiles[i].color
+            );
+        }
+    }
+}
+
+
+void    cleanupProjectiles(Game *game) {
+    int activeCount = 0;
+    for (int i = 0; i < game->numVisualProjectiles; i++) {
+        if (game->visualProjectiles[i].active) {
+            game->visualProjectiles[activeCount++] = game->visualProjectiles[i];
+        }
+    }
+    game->numVisualProjectiles = activeCount;
+}
+
+int isCollision(float projectileX, float projectileY, float monsterX, float monsterY) {
+    float dx = projectileX - monsterX;
+    float dy = projectileY - monsterY;
+    float distanceSquared = dx * dx + dy * dy;
+    return distanceSquared < ((PROJECTILE_SIZE / 2) * (PROJECTILE_SIZE / 2));
+}
+
+void updateProjectilePosition(Game *game, float deltaTime) {
+    for (int i = 0; i < game->numVisualProjectiles; i++) {
+        VisualProjectile *vp = &game->visualProjectiles[i];
+        if (!vp->active || vp->targetMonster == NULL) continue;
+
+        float dirX = vp->targetMonster->x - vp->start_x;
+        float dirY = vp->targetMonster->y - vp->start_y;
+        float distance = sqrt(dirX * dirX + dirY * dirY);
+
+        // Normalize the direction vector
+        float normalizedDirX = dirX / distance;
+        float normalizedDirY = dirY / distance;
+
+        // Calculate movement
+        vp->start_x += normalizedDirX * (PROJECTILE_SPEED * deltaTime);
+        vp->start_y += normalizedDirY * (PROJECTILE_SPEED * deltaTime);
+        
+        // Check for collision
+        if (isCollision(vp->start_x, vp->start_y, vp->targetMonster->x, vp->targetMonster->y)) {
+            vp->active = 0;
+        }
+    }
+}
+
+void debugPrintProjectiles(Game *game) {
+    printf("Current Projectile Count: %d\n", game->numVisualProjectiles);
+    for (int i = 0; i < game->numVisualProjectiles; i++) {
+        VisualProjectile *vp = &game->visualProjectiles[i];
+        printf("Projectile %d - Active: %d, Start: (%.2f, %.2f), End: (%.2f, %.2f), Target: %p\n",
+               i, vp->active, vp->start_x, vp->start_y, vp->end_x, vp->end_y, (void*)vp->targetMonster);
+    }
+}
+    
+void drawAll(Game *game, Wave *headWave,float deltaTime) {
     MLV_clear_window(MLV_COLOR_BLACK);
     draw_side_information(game);
 
@@ -271,23 +337,19 @@ void drawAll(Game *game, Wave *headWave) {
     while (currentWave != NULL) {
         drawMonsters(currentWave->monsters, currentWave->Nb_Monsters);
         for (int i = 0; i < currentWave->Nb_Monsters; i++) {
+            if (currentWave->monsters[i].hp <= 0)
+            continue;
+
             drawMonsterHealthBar(&(currentWave->monsters[i]), game->pathSize);
         }
         currentWave = currentWave->next;
     }
-    for (int i = 0; i < game->numVisualProjectiles; i++) {
-        VisualProjectile *vp = &game->visualProjectiles[i];
-        MLV_draw_line(vp->start.x, vp->start.y, vp->end.x, vp->end.y, vp->color);
-    }// draw visual projectiles
-
-
     draw_start_and_finish(game->path[0], game->path[game->pathSize - 1]);
     for (int i = 0; i < game->tower_count; i++) {
         drawTower(&(game->towers[i]));
     }
-
-    game->numVisualProjectiles = 0; // added to clear the visual projectiles
     drawManaBar(game);
     draw_next_wave_time(game);
+    
 }
 

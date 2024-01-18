@@ -29,14 +29,14 @@ Gemme * createGem(int niveau){
     newGem->type = PURE;
     newGem->niveau = niveau;
     newGem->teinte = teinte;
-    newGem->cooldown = 1.0f / (2 * niveau);
+    newGem->cooldown = 2.0f; // (2 * (niveau + 1));
 
     return newGem;
 }
 
 float calculateGemDamage(const Gemme *gem, const Monster *target)
 {
-    float baseDamage = 10.0f; // to test
+    float baseDamage = 90.0f; // to test
 
     int hueDifference = abs(gem->teinte - target->tint);
     if (hueDifference > 180)
