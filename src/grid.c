@@ -40,7 +40,7 @@ static int too_Close_To_Path(int x, int y, int startX, int startY, Point *path, 
 //     }
 // }
 
-static void initialize_Grid(int grid[HEIGHT][WIDTH]) {
+static void initialize_Grid(short grid[HEIGHT][WIDTH]) {
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
             grid[y][x] = EMPTY;
@@ -80,7 +80,7 @@ static int calculate_Extend(int x, int y, int direction, int startX, int startY,
 }
 
 
-static void add_Path_Segment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize) {
+static void add_Path_Segment(int *x, int *y, int direction, int steps, short grid[HEIGHT][WIDTH], int *length, Point **path, short *pathSize) {
     int dx = 0, dy = 0;
 
     switch(direction) {
@@ -150,7 +150,7 @@ float distanceBetweenPoints(Point p1, Point p2) {
     return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
 
-void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize) {
+void generatePath(short grid[HEIGHT][WIDTH], Point **path, short *pathSize) {
     srand(time(NULL));
     int attempts = 0;
 

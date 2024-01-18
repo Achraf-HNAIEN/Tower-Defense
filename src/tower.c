@@ -15,7 +15,7 @@ void InitializeTower(Tower *tower, Point position) {
     tower->gemme = NULL;
 }
 
-int CanBuildTower(int grid[HEIGHT][WIDTH], Point position) {
+int CanBuildTower(short grid[HEIGHT][WIDTH], Point position) {
     if (!isWithinBounds(position.x, position.y)) {
         return 0; //position is out of bounds
     }

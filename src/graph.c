@@ -8,7 +8,7 @@
 static void draw_cell(int x, int y, MLV_Color color) {
     MLV_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE, color);
 }
-static void draw_grid_with_path(int grid[HEIGHT][WIDTH], Point *path, int pathSize) {
+static void draw_grid_with_path(short grid[HEIGHT][WIDTH], Point *path, int pathSize) {
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             draw_cell(j, i, MLV_COLOR_GRAY); 

@@ -21,28 +21,26 @@ typedef struct{
   int wave;
   int mana;
   int mana_max;
-  int pathSize;
-  int quit;
-  int grid[HEIGHT][WIDTH];
-  int nb_tower;
-  int level_mana;
-  int level_gemme_in_shop;
-  Point *path;
-  int want_to_place_tower; //if the player is in tower placement mode 0 by default and 1 if he is in tower placement mode
-  Tower towers[MAX_TOWERS]; 
-  int tower_count;
-  Wave *waves;
-  Wave *wavesHead;
-  int wave_count;
-  Gemme * inventaire[6];
+  short pathSize;
+  short quit;
+  short grid[HEIGHT][WIDTH];
+  short nb_tower;
+  short level_mana;
+  short level_gemme_in_shop;
+  short want_to_place_tower; //if the player is in tower placement mode 0 by default and 1 if he is in tower placement mode
+  short tower_count;
+  short next_wave_time;
   short inventory_size;
   short has_start;
-  int next_wave_time;
-  short gemme_selected; //-1 mean no gemme selected, [0-5] inventory index / 6 mean slot fusion 1 / 7 mean slot fusion 2
-  VisualProjectile visualProjectiles[MAX_PROJECTILES];
   short numVisualProjectiles;
+  short gemme_selected; //-1 mean no gemme selected, [0-5] inventory index / 6 mean slot fusion 1 / 7 mean slot fusion 2
   Gemme * fusion_slot1; // NULL mean no gemme in fusion slot 1
   Gemme * fusion_slot2; // NULL mean no gemme in fusion slot 2
+  Gemme * inventaire[6];
+  Wave *wavesHead;
+  Point *path;
+  Tower towers[MAX_TOWERS]; 
+  VisualProjectile visualProjectiles[MAX_PROJECTILES];
   }Game;
 
 

@@ -35,7 +35,7 @@ int main(int argc, char*argv[]) {
 
   // Initialize game structure
   Game game = {.wave = 1,
-               .mana = 150,
+               .mana = 1000,
                .mana_max = 2000,
                .path = NULL,
                .pathSize = 0,
@@ -45,7 +45,7 @@ int main(int argc, char*argv[]) {
                .level_gemme_in_shop = 0,
                .want_to_place_tower = 0,
                .tower_count = 0,
-               .wavesHead = NULL,
+               .wavesHead = NULL,// Head of the waves linked list
                .inventory_size = 0,
                .has_start = 0,
                .gemme_selected = -1,  // -1 mean no gemme selected
@@ -57,7 +57,7 @@ int main(int argc, char*argv[]) {
   }
 
   memset(game.visualProjectiles, 0, sizeof(game.visualProjectiles));
-  Wave* headWave = NULL;  // Head of the waves linked list
+     
   Wave* currentWave;      // Current wave pointer for iteration
 
   const int frameDelay = 1000 / 60;
@@ -74,7 +74,7 @@ int main(int argc, char*argv[]) {
     MLV_actualise_window();
 
     // Update and handle each wave
-    currentWave = headWave;
+    currentWave = game.wavesHead;
     while (currentWave != NULL) {
       moveMonsters(currentWave->monsters, game.path, game.pathSize, deltaTime,&game);
       currentWave = currentWave->next;
@@ -141,10 +141,10 @@ int main(int argc, char*argv[]) {
       Wave* newWave = initializeWave(game.wave, game.path, game.pathSize);
 
       // Append the new wave to the list
-      if (headWave == NULL) {
-        headWave = newWave;
+      if (game.wavesHead == NULL) {
+        game.wavesHead = newWave;
       } else {
-        Wave* temp = headWave;
+        Wave* temp = game.wavesHead;
         while (temp->next != NULL) {
           temp = temp->next;
         }
@@ -160,10 +160,10 @@ int main(int argc, char*argv[]) {
                 state == MLV_RELEASED)) {
       game.has_start = !game.has_start;
       Wave* newWave = initializeWave(game.wave, game.path, game.pathSize);
-      if (headWave == NULL) {
-        headWave = newWave;
+      if (game.wavesHead == NULL) {
+        game.wavesHead = newWave;
       } else {
-        Wave* temp = headWave;
+        Wave* temp = game.wavesHead;
         while (temp->next != NULL) {
           temp = temp->next;
         }
@@ -184,15 +184,15 @@ int main(int argc, char*argv[]) {
         (WAVE_INTERVAL - (currentTime - last_wave_time) / 1000);
 
     // Draw everything
-    currentWave = headWave;
-    game.wavesHead = headWave;
+    currentWave = game.wavesHead;
+    game.wavesHead = game.wavesHead;
     
     if (NULL == currentWave) {
       drawAll(&game, NULL,deltaTime);
     } else {
       while (currentWave != NULL) {
 
-        drawAll(&game, headWave,deltaTime);
+        drawAll(&game, game.wavesHead,deltaTime);
         UpdateGemmesAndShoot(&game, deltaTime);
         drawProjectiles(&game);
         updateProjectilePosition(&game, deltaTime);
@@ -223,7 +223,7 @@ int main(int argc, char*argv[]) {
   }
 
   // Free all the waves and monsters
-  currentWave = headWave;
+  currentWave = game.wavesHead;
   while (currentWave != NULL) {
     Wave* nextWave = currentWave->next;
     if (currentWave->monsters != NULL) {

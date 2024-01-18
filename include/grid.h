@@ -35,7 +35,7 @@ float distanceBetweenPoints(Point p1, Point p2);
 // void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
 // int validatePath(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
 //int chooseNewDirection(int x, int y, int currentDirection, Point *path, int pathSize);
-void generatePath(int grid[HEIGHT][WIDTH], Point **path, int *pathSize);
+void generatePath(short grid[HEIGHT][WIDTH], Point **path, short *pathSize);
 
 
 #endif 

@@ -16,7 +16,7 @@ typedef struct {
 
 void InitializeTower(Tower *tower, Point position);
 
-int CanBuildTower(int grid[HEIGHT][WIDTH], Point position);
+int CanBuildTower(short grid[HEIGHT][WIDTH], Point position);
 
 int PlaceGemmeInTower(Tower *tower, Gemme *gemme);
 
