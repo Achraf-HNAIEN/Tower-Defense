@@ -13,6 +13,7 @@
 #define EMPTY 0
 #define HEALTH_BAR_WIDTH 20
 #define HEALTH_BAR_HEIGHT 3
+#define MONSTRE_SIZE (CELL_SIZE / 4)
 
 
 int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height);
@@ -20,6 +21,6 @@ void drawAll(Game *game, Wave *headWave,float deltaTime);
 void updateProjectilePosition(Game *game, float deltaTime);
 void drawProjectiles(Game *game);
 void cleanupProjectiles(Game *game);
-    void debugPrintProjectiles(Game *game);
+void debugPrintProjectiles(Game *game);
 
 #endif

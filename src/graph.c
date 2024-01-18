@@ -52,7 +52,7 @@ static MLV_Color hueToRGB(int hue) {
 }
 
 static void drawMonsters(Monster monsters[], int count) {
-    int monsterSize = CELL_SIZE / 4; 
+    int monsterSize = MONSTRE_SIZE; 
 
     for (int i = 0; i < count; i++) {
         if (monsters[i].hp <= 0) continue;
@@ -262,7 +262,6 @@ static void draw_next_wave_time(Game * game){
 }
 
 void drawProjectiles(Game *game) {
-    //printf("Current Projectile Count: %d\n", game->numVisualProjectiles);
     for (int i = 0; i < game->numVisualProjectiles; i++) {
         if (game->visualProjectiles[i].active) {
             MLV_draw_filled_circle(
@@ -276,7 +275,7 @@ void drawProjectiles(Game *game) {
 }
 
 
-void    cleanupProjectiles(Game *game) {
+void cleanupProjectiles(Game *game) {
     int activeCount = 0;
     for (int i = 0; i < game->numVisualProjectiles; i++) {
         if (game->visualProjectiles[i].active) {
@@ -286,12 +285,16 @@ void    cleanupProjectiles(Game *game) {
     game->numVisualProjectiles = activeCount;
 }
 
-int isCollision(float projectileX, float projectileY, float monsterX, float monsterY) {
+int isCollision(float projectileX, float projectileY, float monsterX, float monsterY, float monsterSize) {
     float dx = projectileX - monsterX;
     float dy = projectileY - monsterY;
-    float distanceSquared = dx * dx + dy * dy;
-    return distanceSquared < ((PROJECTILE_SIZE / 2) * (PROJECTILE_SIZE / 2));
+    float distance = sqrt(dx * dx + dy * dy);
+    float projectileRadius = PROJECTILE_SIZE; 
+    float monsterRadius = monsterSize; 
+    
+    return distance < (projectileRadius + monsterRadius);
 }
+
 
 void updateProjectilePosition(Game *game, float deltaTime) {
     for (int i = 0; i < game->numVisualProjectiles; i++) {
@@ -302,16 +305,13 @@ void updateProjectilePosition(Game *game, float deltaTime) {
         float dirY = vp->targetMonster->y - vp->start_y;
         float distance = sqrt(dirX * dirX + dirY * dirY);
 
-        // Normalize the direction vector
         float normalizedDirX = dirX / distance;
         float normalizedDirY = dirY / distance;
 
-        // Calculate movement
-        vp->start_x += normalizedDirX * (PROJECTILE_SPEED * deltaTime);
-        vp->start_y += normalizedDirY * (PROJECTILE_SPEED * deltaTime);
+        vp->start_x += normalizedDirX * (PROJECTILE_SPEED * deltaTime) * vp->targetMonster->speed;
+        vp->start_y += normalizedDirY * (PROJECTILE_SPEED * deltaTime )* vp->targetMonster->speed;
         
-        // Check for collision
-        if (isCollision(vp->start_x, vp->start_y, vp->targetMonster->x, vp->targetMonster->y)) {
+        if (!isCollision(vp->start_x, vp->start_y, vp->targetMonster->x, vp->targetMonster->y,MONSTRE_SIZE) && vp->targetMonster->hp > 0) {
             vp->active = 0;
         }
     }
@@ -336,6 +336,8 @@ void drawAll(Game *game, Wave *headWave,float deltaTime) {
     Wave *currentWave = headWave;
     while (currentWave != NULL) {
         drawMonsters(currentWave->monsters, currentWave->Nb_Monsters);
+        drawProjectiles(game);
+
         for (int i = 0; i < currentWave->Nb_Monsters; i++) {
             if (currentWave->monsters[i].hp <= 0)
             continue;

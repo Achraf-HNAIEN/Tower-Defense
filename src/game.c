@@ -326,28 +326,44 @@ void handle_inventory_click(int m_x, int m_y, Game *game){
     
 }
 
-void try_fusion(Game * game){
-    if(game->mana >= 100){
-        Gemme * gemme_fusion = (Gemme *) malloc(sizeof(Gemme));
-        if(!gemme_fusion) return ;
-        if(!fuseGems(game->fusion_slot1, game->fusion_slot2, gemme_fusion)){
-            game->mana -= 100;
-            for(int i = 0 ; i<6 ; i++){
-                if (game->inventaire[i] == NULL ){
+void try_fusion(Game *game) {
+    // Check if there's enough mana for fusion
+    if (game->mana >= 100) {
+        Gemme *gemme_fusion = (Gemme *) malloc(sizeof(Gemme));
+        if (!gemme_fusion) return; // Exit if memory allocation fails
+
+        // Attempt to fuse the gems
+        if (!fuseGems(game->fusion_slot1, game->fusion_slot2, gemme_fusion)) {
+            game->mana -= 100; // Deduct mana cost for successful fusion
+
+            // Find an empty slot in the inventory
+            int slotFound = 0;
+            for (int i = 0; i < 6; i++) {
+                if (game->inventaire[i] == NULL) {
                     game->inventaire[i] = gemme_fusion;
                     game->inventory_size++;
-                    free(game->fusion_slot1);
-                    free(game->fusion_slot2);
-                    game->fusion_slot1 = NULL;
-                    game->fusion_slot2 = NULL;
-                    return;
+                    slotFound = 1;
+                    break;
                 }
             }
+
+            // Handle case where no slot is available
+            if (!slotFound) {
+                free(gemme_fusion);
+                fprintf(stderr, "No space in inventory for fused gem.\n");
+            }
+
+            // Clean up fusion slots
             free(game->fusion_slot1);
-            game->fusion_slot1 = gemme_fusion;
             free(game->fusion_slot2);
+            game->fusion_slot1 = NULL;
             game->fusion_slot2 = NULL;
+        } else {
+            // Fusion failed, free allocated memory
+            free(gemme_fusion);
         }
+    } else {
+        fprintf(stderr, "Not enough mana to fuse gems.\n");
     }
 }
 
@@ -400,12 +416,10 @@ static Monster* findStrongestMonsterWithinRange(Game *game, Point towerPos, floa
     float maxHP = 0;
 
     Wave *currentWave = game->wavesHead;
-    //fprintf(stderr, "Current wave: %x\n", (void*)currentWave);
     while (currentWave != NULL) {
         for (int i = 0; i < currentWave->Nb_Monsters; i++) {
             Monster *monster = &currentWave->monsters[i];
             float dist = distanceBetweenPoints(towerPos, (Point){monster->x, monster->y});
-            //printf("Checking monster %d: HP = %f, Position = (%f, %f), Distance = %f\n", i, monster->hp, monster->x, monster->y, dist);
 
             if (dist <= range && monster->hp > maxHP) {
                 maxHP = monster->hp;
@@ -413,7 +427,6 @@ static Monster* findStrongestMonsterWithinRange(Game *game, Point towerPos, floa
             }
         }
         if (targetMonster != NULL) {
-            //printf("Strongest monster found with HP: %f at position (%f, %f)\n", targetMonster->hp, targetMonster->x, targetMonster->y);
         }
         currentWave = currentWave->next;
     }
@@ -431,22 +444,18 @@ void UpdateGemmesAndShoot(Game *game, float deltaTime)
         Tower *tower = &game->towers[i];
         if (tower->gemme != NULL)
         {
-            //printf("Tower %d has a gemme. Cooldown before decrement: %f\n", i, tower->gemme->cooldown);
 
-            // Only decrement cooldown once per update cycle
             if (tower->gemme->cooldown > 0)
             {
                 tower->gemme->cooldown -= deltaTime;
-                //printf("Tower %d gemme cooldown after decrement: %f\n", i, tower->gemme->cooldown);
 
                 if (tower->gemme->cooldown <= 0)
                 {
                     tower->gemme->isReadyToShoot = 1;
-                    tower->gemme->cooldown = 0.5; // Reset cooldown to half a second
+                    tower->gemme->cooldown = 0.5; 
                 }
             }
 
-            // If the gemme is ready to shoot, attempt to shoot
             if (tower->gemme->isReadyToShoot)
             {
                 Monster *targetMonster = findStrongestMonsterWithinRange(game, tower->position, 3);
@@ -454,7 +463,7 @@ void UpdateGemmesAndShoot(Game *game, float deltaTime)
                 {
                     shootAtMonster(game, targetMonster, tower);
                     tower->gemme->isReadyToShoot = 0;
-                    tower->gemme->cooldown = 0.5; // Reset cooldown to half a second
+                    tower->gemme->cooldown = 0.5; 
                 }
                 else
                 {

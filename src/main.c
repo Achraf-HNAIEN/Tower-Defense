@@ -192,9 +192,11 @@ int main(int argc, char*argv[]) {
       while (currentWave != NULL) {
 
         drawAll(&game, game.wavesHead,deltaTime);
+        //drawProjectiles(&game);
+        
         UpdateGemmesAndShoot(&game, deltaTime);
-        drawProjectiles(&game);
         updateProjectilePosition(&game, deltaTime);
+        //drawProjectiles(&game);
         cleanupProjectiles(&game);
 
         currentWave = currentWave->next;
