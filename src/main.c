@@ -185,7 +185,6 @@ int main(int argc, char*argv[]) {
 
     // Draw everything
     currentWave = game.wavesHead;
-    game.wavesHead = game.wavesHead;
     
     if (NULL == currentWave) {
       drawAll(&game, NULL,deltaTime);

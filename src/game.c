@@ -51,14 +51,12 @@ int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime
             monsters[i].y += dy * step;
             distanceToMove -= step;
 
-            if (step == segmentLength)
-            {
+            if (step == segmentLength){
                 monsters[i].pathIndex++;
             }
         }
 
-        if (monsters[i].pathIndex >= pathSize - 1)
-        {
+        if (monsters[i].pathIndex >= pathSize - 1){
             // Respawn at the start of the path
             monsters[i].x = path[0].x;
             monsters[i].y = path[0].y;
