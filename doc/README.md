@@ -1,7 +1,7 @@
 # Tower-Defense
 Programmation avancée en C, L3 informatique, Université Gustave Eiffel
 
-## Rapport de projet Tower-Defense réalisé par la collaboration entre HNEIN Achraf & HONORE Mathieu.
+## Rapport de projet Tower-Defense réalisé par la collaboration entre HNAIEN Achraf & HONORE Mathieu.
 
 ### Compilation & lancement
 Après avoir dézippé le projet, pour le compiler il vous suffit de faire une 'make' dans le répértoire du projet. Ce make créera alors un executable nommé 'game' il créera aussi tout les fichier objet dans le dossier 'obj'. Pour lancer le jeu il vous suffit de faire './game' dans le répértoire 'bin'. Le ocde c se trouve dans le dossier 'src' et les entête de ces fichiers dans le dossier 'include'.
