@@ -32,7 +32,7 @@ static void draw_start_and_finish(Point start, Point finish) {
     draw_cell(finish.x, finish.y, MLV_COLOR_RED);
 }
 
-static MLV_Color hueToRGB(int hue) {
+ MLV_Color hueToRGB(int hue) {
     float r = 0.0, g = 0.0, b = 0.0;
 
     int i = hue / 60;

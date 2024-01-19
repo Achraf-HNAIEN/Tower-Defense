@@ -82,7 +82,6 @@ Monster * initialize_Monster(int waveNumber, Point path[], int pathSize) {
         monsters[i].max_hp = monsters[i].hp;
         monsters[i].damage = 10.0f;
         // monsters[i].elemental_residue = 0.0f;
-        // monsters[i].mana_reward = monsters[i].hp * 0.1f * pow(1.3, mana);
         // monsters[i].mana_penalty = monsters[i].hp * 0.15f * pow(1.3, mana);
         // monsters[i].status_effects = 0;
         // monsters[i].status_duration = 0.0f;

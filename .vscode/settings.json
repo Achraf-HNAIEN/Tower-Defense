@@ -10,6 +10,7 @@
     "gemme.h": "c",
     "stdlib.h": "c",
     "__atomic": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "graph.h": "c"
   }
 }

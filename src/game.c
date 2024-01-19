@@ -4,6 +4,87 @@
 #include <string.h>
 #include <math.h>
 #include "game.h"
+#include "graph.h"
+
+void handle_left_click(int mouse_x, int mouse_y, Game *game){
+
+      if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92,
+                          50)) {
+        game->want_to_place_tower = !game->want_to_place_tower;
+      } else if (game->want_to_place_tower) {
+        Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
+        if (isWithinBounds(gridPosition.x, gridPosition.y)) {
+          Gemme* newGem =
+              NULL;  // This should be replaced with actual gem creation logic
+          placeTower(game, gridPosition, newGem);
+          game->want_to_place_tower = !game->want_to_place_tower;
+        }
+      } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 181, 146,
+                                 17, 17) &&
+                 game->level_gemme_in_shop < 12) {
+        game->level_gemme_in_shop++;
+      } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 181, 211,
+                                 17, 17) &&
+                 game->level_gemme_in_shop > 0) {
+        game->level_gemme_in_shop--;
+      } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 15, 80,
+                                 170, 50)) {
+        upgrade_mana_storage(game);
+      } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 105, 162,
+                                 93, 50)) {
+        buy_gemme(game);
+      } else if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 25, 245,
+                                 150, 280)) {
+        handle_inventory_click(mouse_x, mouse_y, game);
+      }
+      else if(game->gemme_selected != -1 && mouse_x <= WIDTH*CELL_SIZE){
+        try_place_gemme_on_tower(game, mouse_x, mouse_y);
+      }
+ }   
+
+void handle_new_wave(Game *game, int currentTime, int *last_wave_time){
+      // Create a new wave
+    Wave* newWave = initializeWave(game->wave, game->path, game->pathSize);
+
+      // Append the new wave to the list
+      if (game->wavesHead == NULL) {
+        game->wavesHead = newWave;
+      } else {
+        Wave* temp = game->wavesHead;
+        while (temp->next != NULL) {
+          temp = temp->next;
+        }
+        temp->next = newWave;
+      }
+
+      add_mana(game, (WAVE_INTERVAL - (currentTime - *last_wave_time) / 1000) *
+                          (game->mana_max / 100));
+      *last_wave_time = MLV_get_time();
+      game->wave++;
+}
+
+void update_game(Game *game, float deltaTime, int mouse_x, int mouse_y){
+    Wave * currentWave = game->wavesHead;
+      cleanupProjectiles(game);
+      updateProjectilePosition(game, deltaTime);
+      UpdateGemmesAndShoot(game, deltaTime);
+      
+    if (NULL == currentWave) {
+      drawAll(game, NULL,deltaTime);
+    } else {
+      while (currentWave != NULL) {
+        drawAll(game, game->wavesHead,deltaTime);
+        currentWave = currentWave->next;
+      }
+      check_wave_dead(game);
+    }
+    if (game->want_to_place_tower && mouse_x >= 0 && mouse_y >= 0 &&
+        mouse_x <= WIDTH * CELL_SIZE && mouse_y <= HEIGHT * CELL_SIZE) {
+      MLV_draw_filled_circle(mouse_x, mouse_y, CELL_SIZE * 3,
+                             MLV_rgba(0, 255, 0, 120));
+    }
+}
+
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game)
 {
     if (!monsters)
@@ -366,17 +447,7 @@ static MLV_Color determineProjectileColor(Gemme *gemme) {
     if (gemme == NULL) {
         return MLV_COLOR_WHITE; // Default color in case of NULL pointer
     }
-
-    switch (gemme->elementType) {
-        case PYRO:
-            return MLV_COLOR_RED;
-        case DENDRO:
-            return MLV_COLOR_GREEN;
-        case HYDRO:
-            return MLV_COLOR_BLUE;
-        default:
-            return MLV_COLOR_WHITE; // Default color for other types
-    }
+    return hueToRGB(gemme->teinte);
 }
 
 void addVisualProjectile(Game *game, VisualProjectile vp) {
@@ -390,7 +461,13 @@ void addVisualProjectile(Game *game, VisualProjectile vp) {
 void shootAtMonster(Game *game, Monster *targetMonster, Tower *tower) {
     float damage = calculateGemDamage(tower->gemme, targetMonster);
 
-    applay_Damage(targetMonster, damage);
+    if(targetMonster->hp > 0 ){
+        applay_Damage(targetMonster, damage);
+        if(targetMonster->hp <= 0){
+            add_mana(game, (int) ( targetMonster->max_hp * 0.1f * pow(1.3, game->level_mana)));
+        }
+    }
+    
     applyElementalEffect(tower->gemme, targetMonster);
 
     VisualProjectile vp = {

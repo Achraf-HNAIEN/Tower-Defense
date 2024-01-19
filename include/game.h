@@ -7,6 +7,7 @@
 #include "monstre.h"
 #include "projectile.h"
 
+
 #define CELL_SIZE 25 
 #define GEMME_RANGE 3
 
@@ -47,6 +48,12 @@ typedef struct{
 extern int is_click_inside(int mouse_x, int mouse_y, int x, int y, int width, int height);
 
 void handle_inventory_click(int m_x, int m_y, Game * game);
+
+void handle_left_click(int mouse_x, int mouse_y, Game *game);
+
+void update_game(Game *game, float deltaTime, int mouse_x, int mouse_y);
+
+void handle_new_wave(Game *game, int currentTime, int *last_wave_time);
 
 int moveMonsters(Monster monsters[], Point path[], int pathSize, float deltaTime, Game *game);
 Wave* initializeWave(int waveNumber, Point path[], int pathSize);

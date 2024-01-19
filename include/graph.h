@@ -22,5 +22,6 @@ void updateProjectilePosition(Game *game, float deltaTime);
 void drawProjectiles(Game *game);
 void cleanupProjectiles(Game *game);
 void debugPrintProjectiles(Game *game);
+MLV_Color hueToRGB(int hue);
 
 #endif
