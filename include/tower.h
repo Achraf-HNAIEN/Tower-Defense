@@ -20,6 +20,5 @@ int CanBuildTower(short grid[HEIGHT][WIDTH], Point position);
 
 int PlaceGemmeInTower(Tower *tower, Gemme *gemme);
 
-void RemoveGemmeFromTower(Tower *tower);
 
 #endif

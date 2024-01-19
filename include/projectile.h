@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define MAX_PROJECTILES 100
-#define PROJECTILE_SPEED 1.75
+#define PROJECTILE_SPEED 2.5
 #define PROJECTILE_SPEED_SLOW 0.75
 #define PROJECTILE_SIZE 3
 

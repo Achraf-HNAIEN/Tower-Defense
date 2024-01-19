@@ -92,10 +92,8 @@ int main(int argc, char*argv[]) {
     MLV_flush_event_queue();
     if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED && mouse_button == MLV_BUTTON_LEFT) {
 
-      printf("Mouse clicked at: x=%d, y=%d\n", mouse_x, mouse_y);
       if (is_click_inside(mouse_x, mouse_y, WIDTH * CELL_SIZE + 5, 162, 92,
                           50)) {
-        printf("Tower placement button clicked.\n");
         game.want_to_place_tower = !game.want_to_place_tower;
       } else if (game.want_to_place_tower) {
         Point gridPosition = {mouse_x / CELL_SIZE, mouse_y / CELL_SIZE};
@@ -185,23 +183,18 @@ int main(int argc, char*argv[]) {
 
     // Draw everything
     currentWave = game.wavesHead;
-    
+      cleanupProjectiles(&game);
+      updateProjectilePosition(&game, deltaTime);
+      UpdateGemmesAndShoot(&game, deltaTime);
+      check_wave_dead(&game);
     if (NULL == currentWave) {
       drawAll(&game, NULL,deltaTime);
     } else {
       while (currentWave != NULL) {
-
         drawAll(&game, game.wavesHead,deltaTime);
-        //drawProjectiles(&game);
-        
-        UpdateGemmesAndShoot(&game, deltaTime);
-        updateProjectilePosition(&game, deltaTime);
-        //drawProjectiles(&game);
-        cleanupProjectiles(&game);
-
         currentWave = currentWave->next;
       }
-      check_wave_dead(&game);
+      
     }
     if (game.want_to_place_tower && mouse_x >= 0 && mouse_y >= 0 &&
         mouse_x <= WIDTH * CELL_SIZE && mouse_y <= HEIGHT * CELL_SIZE) {

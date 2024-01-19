@@ -24,8 +24,7 @@ typedef struct {
     int niveau;              
     int teinte;              
     ElementType elementType; 
-    float cooldown;
-    float chargeTime;        
+    float cooldown;    
     int isReadyToShoot;         
 } Gemme;
 

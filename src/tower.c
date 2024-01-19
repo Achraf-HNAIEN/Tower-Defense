@@ -24,41 +24,22 @@ int CanBuildTower(short grid[HEIGHT][WIDTH], Point position) {
 
 int PlaceGemmeInTower(Tower *tower, Gemme *gemme) {
     if (tower == NULL) {
-        printf("Error ------> Tower is NULL in place gemme in tower\n");
         return 0;
     }
     if (gemme == NULL) {
-        printf("Error ------> Gemme NULL in place Gemme in tower function\n");
         return 0;
     }
 
     if (tower->gemme != NULL) {
-        printf("Warning ------> there is all ready a gemme on this tower \n");
         return 0;
-
     }
 
     tower->gemme = gemme;
     if (tower->gemme != NULL) {
-        tower->gemme->chargeTime = GEMME_CHARGE_TIME;
+        tower->gemme->cooldown = GEMME_CHARGE_TIME;
         tower->gemme->isReadyToShoot = 0;
     }
-
-    printf("Gem placed in tower. It will be ready to shoot after %f seconds.\n", GEMME_CHARGE_TIME);
     return 1;
-}
-
-void RemoveGemmeFromTower(Tower *tower) {
-    if (tower == NULL) {
-        printf("Error -------> Tower is NULL in Remove gemme from Tower\n");
-        return;
-    }
-    if (tower->gemme == NULL) {
-        printf("Warning ------> No gemme to remove from this tower.\n");
-        return;
-    }
-    tower->gemme = NULL;
-    printf("Gemme removed from tower with success\n");
 }
 
 

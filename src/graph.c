@@ -289,10 +289,7 @@ int isCollision(float projectileX, float projectileY, float monsterX, float mons
     float dx = projectileX - monsterX;
     float dy = projectileY - monsterY;
     float distance = sqrt(dx * dx + dy * dy);
-    float projectileRadius = PROJECTILE_SIZE; 
-    float monsterRadius = monsterSize; 
-    
-    return distance < (projectileRadius + monsterRadius);
+    return distance*CELL_SIZE < (2);
 }
 
 
@@ -311,7 +308,7 @@ void updateProjectilePosition(Game *game, float deltaTime) {
         vp->start_x += normalizedDirX * (PROJECTILE_SPEED * deltaTime) * vp->targetMonster->speed;
         vp->start_y += normalizedDirY * (PROJECTILE_SPEED * deltaTime )* vp->targetMonster->speed;
         
-        if (!isCollision(vp->start_x, vp->start_y, vp->targetMonster->x, vp->targetMonster->y,MONSTRE_SIZE) && vp->targetMonster->hp > 0) {
+        if (isCollision(vp->start_x, vp->start_y, vp->targetMonster->x, vp->targetMonster->y,MONSTRE_SIZE) ) {
             vp->active = 0;
         }
     }

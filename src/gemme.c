@@ -45,7 +45,6 @@ float calculateGemDamage(const Gemme *gem, const Monster *target)
     }
 
     float colorEffectiveness = (1.0f - cos(M_PI * hueDifference / 180.0f)) / 2.0f;
-    fprintf(stderr,"le niveau de la gemme ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>%d \n", gem->niveau);
     float finalDamage = baseDamage * pow(2, gem->niveau) * (1 - colorEffectiveness);
 
     if (gem->type == MIXTE)
@@ -54,7 +53,6 @@ float calculateGemDamage(const Gemme *gem, const Monster *target)
         if (1 == rand() % 10)
             finalDamage *= 2;
     }
-    printf("Base Damage: %f, Level Multiplier: %f, Color Effectiveness: %f, Final Damage: %f\n", baseDamage, pow(2, gem->niveau), colorEffectiveness, finalDamage);
 
     return finalDamage;
 }
@@ -92,7 +90,6 @@ int fuseGems(const Gemme *gem1, const Gemme *gem2, Gemme *fusedGem)
         return 1;
     }
     fusedGem->niveau = gem1->niveau + 1;
-    fprintf(stderr, "Gem1: %d, Gem2: %d, Fused: %d\n", gem1->niveau, gem2->niveau, fusedGem->niveau);
     fusedGem->teinte = (gem1->teinte + gem2->teinte) / 2;
 
     if (gem1->type == PURE && gem2->type == PURE && gem1->elementType == gem2->elementType)
@@ -105,6 +102,7 @@ int fuseGems(const Gemme *gem1, const Gemme *gem2, Gemme *fusedGem)
         fusedGem->type = MIXTE;
         fusedGem->elementType = ELEMENT_NONE;
     }
+    fusedGem->cooldown = 2.0f;
     return 0;
 }
 

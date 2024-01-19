@@ -31,15 +31,6 @@ static int too_Close_To_Path(int x, int y, int startX, int startY, Point *path, 
     return 0;  
 }
 
-// static void print_Grid(int grid[HEIGHT][WIDTH]) {
-//     for (int y = 0; y < HEIGHT; y++) {
-//         for (int x = 0; x < WIDTH; x++) {
-//             printf("%d ", grid[y][x]);
-//         }
-//         printf("\n");
-//     }
-// }
-
 static void initialize_Grid(short grid[HEIGHT][WIDTH]) {
     for (int y = 0; y < HEIGHT; y++) {
         for (int x = 0; x < WIDTH; x++) {
@@ -50,7 +41,6 @@ static void initialize_Grid(short grid[HEIGHT][WIDTH]) {
 static void choose_Starting_Point(int *x, int *y) {
     *x = rand() % (WIDTH - 6) + 3;  
     *y = rand() % (HEIGHT - 6) + 3; 
-    printf("Starting Point Chosen: (%d, %d)\n", *x, *y); // Debug
 }
 
 
