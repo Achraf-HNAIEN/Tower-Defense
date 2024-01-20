@@ -1,0 +1,298 @@
+commit f9dd6ec9d1b7a7f30f2fcce67ca8c13c599afcf3
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 14:26:57 2024 +0100
+
+    Co-authored-by: Mathieu Honoré <JustHNR@users.noreply.github.com>
+    Update gem damage calculation in calculateGemDamage function
+
+commit 59e8dade69df763570999af14d27cf0d3fc28fc4
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 13:42:00 2024 +0100
+
+    Co-authored-by: Mathieu Honoré <JustHNR@users.noreply.github.com>
+    last team look on code (adjusting some function adding a free function)
+
+commit b074ca6e2cc14a382d05ee357603cb2b2f70457a
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 12:58:36 2024 +0100
+
+    doc added to .h files
+
+commit 11b49f96fb5762f79cffa9f5cf28a99e102a445b
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Fri Jan 19 17:59:17 2024 +0100
+
+    EXTRACT METHOD MAIN
+
+commit fa16d585f8ae980586cb78f1cebcfe78cf98c4e9
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Fri Jan 19 16:24:54 2024 +0100
+
+    Shoot correction
+
+commit bcf24207a69bee8ff0dbbd0fbb447c0cfe9ec897
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Thu Jan 18 20:47:28 2024 +0100
+
+    shooting updated
+
+commit 030f2241047e334b1287243896dd077c859f6b07
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 16:00:43 2024 +0100
+
+    Petite modif
+
+commit 1a67e84c7a8e344465e547642d87af14fd3f33d9
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 15:48:48 2024 +0100
+
+    Petite erreur
+
+commit 08b8ceb046294f272e21d3903c3c8d3b41bf2f20
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 15:24:40 2024 +0100
+
+    Segfault réglé + modification structure game
+
+commit 359664a39dd95b913313627912f70361b9fd1337
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Thu Jan 18 04:18:39 2024 +0100
+
+    shooting mechanism 80% ready but still need some  adjustments
+    projectils are not despiring disappearing or they disappear before touche the Monster (dammage is ok)
+
+commit 7b0dd90fbc1b5765dff8ac623887bb833d5d5dcb
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Wed Jan 17 19:07:00 2024 +0100
+
+    -help + suppresion wave sans HP + README  + Lecture arguments + autres améliorations
+
+commit f0451f31935a0abd3ccde8971a3dde12667da6a2
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 16 19:04:53 2024 +0100
+
+    remove gemme tower
+
+commit 34a3376796866420df73a235879af3ffa511cbda
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 16 18:28:59 2024 +0100
+
+    Co-authored-by: Achraf HNAIEN  manque tir and retirer tour
+
+commit b47c44fe766e528972b94cbaf558f3ed8a5aa63a
+Author: Achraf HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Tue Jan 16 02:26:46 2024 +0100
+
+    shooting structure and functions done
+    some fo gemmes function has been rectified
+
+commit c2e95e84dc5049530e2f188214972aa397558e8e
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Mon Jan 15 17:23:41 2024 +0100
+
+    Co-authored-by: Achraf HNAIEN <Achraf-HNAIEN@users.noreply.github.com>
+
+commit 803202abc3ac916f1820bd06bc0a0b7e796608db
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sun Jan 14 03:57:58 2024 +0100
+
+    wave system working perfectly
+
+commit 82a255673245293062ae9468f6a9a646c613f720
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Sat Jan 13 22:44:02 2024 +0100
+
+    Co-authored-by: Achraf HNAIEN
+    Session commune click ATH + structure Wave + fonctions annexes with LiveShare extensions
+
+commit 74852c912a0263a218cfea0c0a00a8b7882e7658
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Sat Jan 13 20:39:21 2024 +0100
+
+    press for new wave (not finish)
+
+commit 01f8648d247f2273f5bef7c97ec014e3cc2d0aa1
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 11 22:42:20 2024 +0100
+
+    prix tour + bouton
+
+commit 61513b4d083bd88683b1282f6c48b2bd657f5194
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Thu Jan 11 02:51:59 2024 +0100
+
+    monstre respowen in the base health bar repared
+    tower manged with mana cost,placmement and graphic
+
+commit b8d5b8079ff6e0dcbbb3a541715355e482fe93d2
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Wed Jan 10 19:28:59 2024 +0100
+
+    update health and gemms
+
+commit 263d325a662522361f6c074f3f3105ff5d09575b
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Wed Jan 10 18:30:49 2024 +0100
+
+    update
+
+commit ef0586a093e4fee47cf5a2b855dedf32512af3d5
+Author: Achraf HNAIEN <133498492+Achraf-HNAIEN@users.noreply.github.com>
+Date:   Wed Jan 10 18:23:09 2024 +0100
+
+    Update graph.c
+
+commit c81e487e219ad672e6d8827c4b4ac175ded5166a
+Author: Achraf HNAIEN <133498492+Achraf-HNAIEN@users.noreply.github.com>
+Date:   Wed Jan 10 18:04:34 2024 +0100
+
+    Update graph.h
+
+commit cc6f26b7223df98d5a27cbf6e0ce4c1ee5fab3a2
+Author: Achraf HNAIEN <133498492+Achraf-HNAIEN@users.noreply.github.com>
+Date:   Wed Jan 10 18:04:05 2024 +0100
+
+    Update graph.c
+    
+    add health bar
+
+commit f22796947dca34e7b8d6d0022b4004205bdc71aa
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Wed Jan 10 16:47:27 2024 +0100
+
+    bouton pour level gemme
+
+commit 01bd1788bc467b2925d43c4f956c4dd6fcbacb08
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Wed Jan 10 12:32:17 2024 +0100
+
+    "graphic side bar"
+
+commit 12645cc70b70bb2ebfd7f62a7c91e7f9120e7df8
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Wed Jan 10 11:56:33 2024 +0100
+
+    Shop update
+
+commit 1c13e3da19da11dba4f8608751f50911e8fa314c
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Tue Jan 9 18:05:30 2024 +0100
+
+    new file
+
+commit f0b3648c1a11a2057161889bf6ae2eca0988e8ab
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Tue Jan 9 18:04:21 2024 +0100
+
+    Monstres tint and tower
+
+commit 4e25c7e3c9541013b9d79f5f45111e9031953f5e
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 9 17:52:40 2024 +0100
+
+    "Side Bar"
+
+commit cc7c1101d5d3344ee760e2183041589c6fc38375
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 9 17:50:31 2024 +0100
+
+    "affichage side bar"
+
+commit a55394a20f4414913bd18255ce1a696fa01abaa5
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 9 14:12:21 2024 +0100
+
+    "SpawnDelay"
+
+commit d39898da1cd661dc2f5036db7b256f496705af4b
+Merge: 3645827 ae8c84d
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 9 13:46:18 2024 +0100
+
+    "CleanCode"
+
+commit 3645827d093e40bae904f63279a4bed9b6a784a0
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Tue Jan 9 13:44:20 2024 +0100
+
+    CleanCode
+
+commit ae8c84d36cfab2c569c59ae8e0c744345305d6b7
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Tue Jan 9 13:39:31 2024 +0100
+
+    up
+
+commit e2558020958dda4f7b182fcd4ac62ebcc8b5f731
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Tue Jan 9 13:33:17 2024 +0100
+
+    monstre update
+
+commit 87ad6df05987ab51cca9258fb7860271b0e785cb
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 4 19:44:47 2024 +0100
+
+    add gemme creations and differents monster type creation
+
+commit 2da3341e2a80a9b88dbcf5f9d1aaf3299637df71
+Author: Achraf HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Mon Jan 1 21:19:57 2024 +0100
+
+    monstres speed and moves
+
+commit 606475c5433ad6381fd0db4d5c4f94353f31e04f
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Fri Dec 29 13:00:15 2023 +0100
+
+    Monster ralentit et plus de superposition
+
+commit 0e4a6fbf1f28f2a3894057dc6d2ffeac87dac2eb
+Author: Achraf HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Fri Dec 29 03:01:00 2023 +0100
+
+    Monstere add but speed and number to adjust !!
+
+commit 09e4944fba93cc5552dabe506769ec14638a45c4
+Author: Achraf HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Fri Dec 29 02:06:06 2023 +0100
+
+    calculateExtend Updated
+    graph added
+    algo running smoothly 👌🏻
+
+commit 5c69b41a95f2b08da6077f5c7d5f0f829f495c4b
+Author: Achraf <achraf.hnaien62@gmail.com>
+Date:   Sat Dec 23 02:23:35 2023 +0100
+
+    Algo Path with Monstres but need to adjust
+
+commit c7371c4490ab63c1d7090236f38598b22294806c
+Author: Achraf <achraf.hnaien62@gmail.com>
+Date:   Fri Dec 22 23:56:59 2023 +0100
+
+    Algo path Working
+
+commit c85f5c1cddf1702239306362b802c3eec154d92a
+Author: Achraf <achraf.hnaien62@gmail.com>
+Date:   Fri Dec 22 23:47:23 2023 +0100
+
+    grid is working but the path dose bot respect n-2 distance from bounds
+
+commit 65f769714532e25148bc9939f6eadc0fd4ec57e0
+Author: Achraf <achraf.hnaien62@gmail.com>
+Date:   Fri Dec 22 17:51:22 2023 +0100
+
+    tooClose Function to check
+
+commit 4bee9f6ff700e0a9a81813c8ae0fa80749062eec
+Author: Achraf <achraf.hnaien62@gmail.com>
+Date:   Wed Nov 22 13:47:40 2023 +0100
+
+    first test
+
+commit 2e289a064e06cc2bd4cebe7bf650754d59e753ad
+Author: Achraf HNAIEN <133498492+AchrafHnaien@users.noreply.github.com>
+Date:   Sun Nov 12 12:43:32 2023 +0100
+
+    Initial commit
