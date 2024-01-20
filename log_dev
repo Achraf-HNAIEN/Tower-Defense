@@ -1,3 +1,72 @@
+commit f9dd6ec9d1b7a7f30f2fcce67ca8c13c599afcf3
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 14:26:57 2024 +0100
+
+    Co-authored-by: Mathieu Honoré <JustHNR@users.noreply.github.com>
+    Update gem damage calculation in calculateGemDamage function
+
+commit 59e8dade69df763570999af14d27cf0d3fc28fc4
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 13:42:00 2024 +0100
+
+    Co-authored-by: Mathieu Honoré <JustHNR@users.noreply.github.com>
+    last team look on code (adjusting some function adding a free function)
+
+commit b074ca6e2cc14a382d05ee357603cb2b2f70457a
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Sat Jan 20 12:58:36 2024 +0100
+
+    doc added to .h files
+
+commit 11b49f96fb5762f79cffa9f5cf28a99e102a445b
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Fri Jan 19 17:59:17 2024 +0100
+
+    EXTRACT METHOD MAIN
+
+commit fa16d585f8ae980586cb78f1cebcfe78cf98c4e9
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Fri Jan 19 16:24:54 2024 +0100
+
+    Shoot correction
+
+commit bcf24207a69bee8ff0dbbd0fbb447c0cfe9ec897
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Thu Jan 18 20:47:28 2024 +0100
+
+    shooting updated
+
+commit 030f2241047e334b1287243896dd077c859f6b07
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 16:00:43 2024 +0100
+
+    Petite modif
+
+commit 1a67e84c7a8e344465e547642d87af14fd3f33d9
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 15:48:48 2024 +0100
+
+    Petite erreur
+
+commit 08b8ceb046294f272e21d3903c3c8d3b41bf2f20
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Thu Jan 18 15:24:40 2024 +0100
+
+    Segfault réglé + modification structure game
+
+commit 359664a39dd95b913313627912f70361b9fd1337
+Author: Achraf-HNAIEN <achraf.hnaien62@gmail.com>
+Date:   Thu Jan 18 04:18:39 2024 +0100
+
+    shooting mechanism 80% ready but still need some  adjustments
+    projectils are not despiring disappearing or they disappear before touche the Monster (dammage is ok)
+
+commit 7b0dd90fbc1b5765dff8ac623887bb833d5d5dcb
+Author: JustHNR <maths.honore@gmail.com>
+Date:   Wed Jan 17 19:07:00 2024 +0100
+
+    -help + suppresion wave sans HP + README  + Lecture arguments + autres améliorations
+
 commit f0451f31935a0abd3ccde8971a3dde12667da6a2
 Author: JustHNR <maths.honore@gmail.com>
 Date:   Tue Jan 16 19:04:53 2024 +0100
