@@ -12,6 +12,13 @@
 
 
 
+/**
+ * @struct VisualProjectile
+ * @brief Represents a visual projectile in the game.
+ * 
+ * This struct contains information about the start and end coordinates of the projectile,
+ * its color, whether it is active or not, and the gem and target monster associated with it.
+ */
 typedef struct {
     float start_x;      
     float start_y;      
@@ -22,7 +29,6 @@ typedef struct {
     Gemme *gem;
     Monster *targetMonster;
 } VisualProjectile;
-
 
 
 

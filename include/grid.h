@@ -24,17 +24,31 @@ typedef struct {
 } Point;
 
 
- int isWithinBounds(int x, int y);
-// int manhattanDistance(int x1, int y1, int x2, int y2);
-// int tooCloseToPath(int x, int y, int startX, int startY, Point *path, int pathSize);
-// void printGrid(int grid[HEIGHT][WIDTH]);
-// void initializeGrid(int grid[HEIGHT][WIDTH]);
-// void chooseStartingPoint(int *x, int *y);
-// int calculateExtend(int x, int y, int direction, int startX, int startY, Point *path, int pathSize);
+/**
+ * Checks if the given coordinates (x, y) are within the bounds of the grid.
+ *
+ * @param x The x-coordinate.
+ * @param y The y-coordinate.
+ * @return 1 if the coordinates are within bounds, 0 otherwise.
+ */
+int isWithinBounds(int x, int y);
+
+/**
+ * Calculates the distance between two points in the grid.
+ *
+ * @param p1 The first point.
+ * @param p2 The second point.
+ * @return The distance between the two points.
+ */
 float distanceBetweenPoints(Point p1, Point p2);
-// void addPathSegment(int *x, int *y, int direction, int steps, int grid[HEIGHT][WIDTH], int *length, Point **path, int *pathSize);
-// int validatePath(int grid[HEIGHT][WIDTH], Point *path, int pathSize);
-//int chooseNewDirection(int x, int y, int currentDirection, Point *path, int pathSize);
+
+/**
+ * Generates a path through the grid using a given grid, starting point, and ending point.
+ *
+ * @param grid      The grid.
+ * @param path      A pointer to the generated path.
+ * @param pathSize  A pointer to the size of the generated path.
+ */
 void generatePath(short grid[HEIGHT][WIDTH], Point **path, short *pathSize);
 
 
