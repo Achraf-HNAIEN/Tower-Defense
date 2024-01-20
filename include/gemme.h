@@ -6,6 +6,7 @@
 
 #define M_PI 3.14159265358979323846
 #define GEMME_CHARGE_TIME 2.0 // Seconde
+#define BASE_DAMAGE 80.0f
 
 typedef enum {
     PURE,

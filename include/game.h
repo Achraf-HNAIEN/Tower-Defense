@@ -15,7 +15,6 @@ typedef struct _Wave{
     Monster *monsters;
     int Nb_Monsters;
     struct _Wave *next;
-
 }Wave;
 
 typedef struct{
@@ -192,4 +191,14 @@ void check_wave_dead(Game * game);
  * @param deltaTime The time elapsed since the last update.
  */
 void UpdateGemmesAndShoot(Game *game, float deltaTime);
+
+/**
+ * @brief Frees the resources used by the game.
+ * 
+ * This function releases any dynamically allocated memory and resources used by the game.
+ * It should be called when the game is no longer needed to prevent memory leaks.
+ * 
+ * @param game The game object to free resources for.
+ */
+void free_game_resources(Game * game);
 #endif

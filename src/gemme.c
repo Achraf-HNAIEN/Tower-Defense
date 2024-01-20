@@ -36,7 +36,7 @@ Gemme * createGem(int niveau){
 
 float calculateGemDamage(const Gemme *gem, const Monster *target)
 {
-    float baseDamage = 90.0f; // to test
+    float baseDamage = BASE_DAMAGE; // to test
 
     int hueDifference = abs(gem->teinte - target->tint);
     if (hueDifference > 180)

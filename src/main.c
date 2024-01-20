@@ -56,7 +56,7 @@ int main(int argc, char*argv[]) {
     game.inventaire[i] = NULL;
   }
 
-  memset(game.visualProjectiles, 0, sizeof(game.visualProjectiles)); // A QUOI CA SERT ? (vraie question)
+  memset(game.visualProjectiles, 0, sizeof(game.visualProjectiles));
      
   Wave* currentWave;      // Current wave pointer for iteration
 
@@ -140,21 +140,6 @@ int main(int argc, char*argv[]) {
   MLV_actualise_window();
   MLV_wait_seconds(3);
   // Clean up resources
-  MLV_free_window();
-  if (game.path != NULL) {
-    free(game.path);
-  }
-
-  // Free all the waves and monsters
-  currentWave = game.wavesHead;
-  while (currentWave != NULL) {
-    Wave* nextWave = currentWave->next;
-    if (currentWave->monsters != NULL) {
-      free(currentWave->monsters);
-    }
-    free(currentWave);
-    currentWave = nextWave;
-  }
-
+free_game_resources(&game); 
   return 0;
 }

@@ -438,8 +438,6 @@ void try_fusion(Game *game) {
             // Fusion failed, free allocated memory
             free(gemme_fusion);
         }
-    } else {
-        fprintf(stderr, "Not enough mana to fuse gems.\n");
     }
 }
 
@@ -606,4 +604,51 @@ void try_remove_gemme_on_tower(Game * game, int mouse_x,int mouse_y){
         }
         
     }
+}
+
+void free_game_resources(Game *game){
+    if(game == NULL){
+        return;
+    }
+// free the path
+if (game->path != NULL){
+    free(game->path);
+    game->path = NULL;
+}
+//Free inventory 
+for (int i = 0; i < game->inventory_size;i++){
+    if(game->inventaire[i] != NULL){
+        free(game->inventaire[i]);
+        game->inventaire[i] = NULL;
+    }
+}
+// Free fusion slots
+if (game->fusion_slot1 != NULL){
+    free(game->fusion_slot1);
+    game->fusion_slot1 = NULL;
+}
+if (game->fusion_slot2 != NULL){
+    free(game->fusion_slot2);
+    game->fusion_slot2 = NULL;
+}
+//Free towers and gemms
+for (int i = 0; i < game->tower_count;i++){
+    if(game->towers[i].gemme != NULL){
+        free(game->towers[i].gemme);
+        game->towers[i].gemme = NULL;
+    }
+}
+// Free all the waves and monsters
+Wave * currentWave = game->wavesHead;
+while (currentWave != NULL) {
+    Wave* nextWave = currentWave->next;
+    if (currentWave->monsters != NULL) {
+        free(currentWave->monsters);
+    }
+    free(currentWave);
+    currentWave = nextWave;
+}
+game->wavesHead = NULL;
+// Free Window
+MLV_free_window();
 }
