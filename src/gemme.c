@@ -49,9 +49,9 @@ float calculateGemDamage(const Gemme *gem, const Monster *target)
 
     if (gem->type == MIXTE)
     {
-        finalDamage *= 2; // to review with Mathieu
+        finalDamage *= 1.3; // to review with Mathieu
         if (1 == rand() % 10)
-            finalDamage *= 2;
+            finalDamage *= 1,5;
     }
 
     return finalDamage;
