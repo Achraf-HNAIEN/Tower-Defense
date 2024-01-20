@@ -51,7 +51,7 @@ float calculateGemDamage(const Gemme *gem, const Monster *target)
     {
         finalDamage *= 1.3; // to review with Mathieu
         if (1 == rand() % 10)
-            finalDamage *= 1,5;
+            finalDamage *= 1.5;
     }
 
     return finalDamage;
